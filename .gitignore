@@ -1,0 +1,7 @@
+* PySimplicial.egg-info/
+
+__pycache__/
+
+*.pyc
+
+*__pycache__

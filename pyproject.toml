@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+ 
+[project]
+name = "PySimplicial"
+version = "0.1.1.4"
+description = "Python library for PL topology, Pachner moves, and TQFT-inspired state-sum, with converters for GNN/TNN/MLP"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "siritoriyowai" }]
+dependencies = [
+    "torch",
+    "numpy",
+    "networkx",
+    "matplotlib",
+    "opt_einsum",
+]
+ 
+[project.urls]
+Repository = ""
+ 
+[tool.setuptools.packages.find]
+where = ["src"]
+ 
