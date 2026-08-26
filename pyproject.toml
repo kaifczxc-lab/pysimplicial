@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
  
 [project]
 name = "pysimplicial"
-version = "0.1"
+version = "0.1.0"
 description = "pysimplicial is an experimental Python library for working with simplicial complexes in the context of topological neural networks"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -19,8 +19,4 @@ dependencies = [
 ]
  
 [project.urls]
-Repository = "https://github.com/kaifczxc-lab/pysimplicial/tree/SiritoriProjects"
- 
-[tool.setuptools.packages.find]
-where = ["src"]
- 
+Repository = "https://github.com/kaifczxc-lab/pysimplicial"
