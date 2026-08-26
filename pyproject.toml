@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
  
 [project]
-name = "PySimplicial"
-version = "0.1.1.4"
-description = "Python library for PL topology, Pachner moves, and TQFT-inspired state-sum, with converters for GNN/TNN/MLP"
+name = "pysimplicial"
+version = "0.1"
+description = "pysimplicial is an experimental Python library for working with simplicial complexes in the context of topological neural networks"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
@@ -19,7 +19,7 @@ dependencies = [
 ]
  
 [project.urls]
-Repository = ""
+Repository = "https://github.com/kaifczxc-lab/pysimplicial/tree/SiritoriProjects"
  
 [tool.setuptools.packages.find]
 where = ["src"]
