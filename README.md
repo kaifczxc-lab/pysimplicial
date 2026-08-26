@@ -11,12 +11,12 @@ Stage: Early development / experimental
 ## Installation
 
 ```
-pip install git+
+pip install git+https://github.com/kaifczxc-lab/pysimplicial.git
 ```
 
 ## Quick Start
 
-(The visualization results can be found in [showcase]())
+(The visualization results can be found in [showcase](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/showcase.ipynb))
 
 ```python
 
@@ -67,10 +67,11 @@ result=(8, 6, 12, 0, 0, 6, 0, 0, 4.0, 1.3333333333333333)
 
 ## Documentation
 
-See [showcase notebook]() to see how all functions work (visualization & logs)
+See [showcase notebook](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/showcase.ipynb) to see how all functions work (visualization & logs)
 
 Full documentation will be available later
 
 ## Contributing
 
-Contributions welcome! See [CONTRIBUTING.md]() for guidelines
+Contributions welcome! See [CONTRIBUTING.md](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/CONTRIBUTING.md) for guidelines
+
