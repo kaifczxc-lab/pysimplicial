@@ -1,6 +1,6 @@
 # pysimplicial
 
-PySimplicial is Python library for PL topology, Pachner moves, and TQFT-inspired state-sum, with converters for GNN/TNN/MLP
+pysimplicial is an experimental Python library for working with simplicial complexes in the context of topological neural networks
 
 Note: This is experimental research code for topological deep learning. Not intended for production use
 
