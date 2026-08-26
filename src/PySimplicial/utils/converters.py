@@ -5,6 +5,30 @@ import torch
 from collections import defaultdict
 
 def relabel(tris):
+    """
+    Renumber vertices of a triangle mesh to consecutive integers starting from 0
+
+    Parameters
+    ----------
+
+    tris: list
+        Triangle mesh list
+    
+    Returns
+    -------
+
+    list of tuple:
+        Renumbered triangle mesh list
+
+    Examples
+    --------
+
+    >>> octahedron_ = [(0,10,20), (0,20,30), (0,30,40), (0,40,10),(50,20,10), (50,30,20), (50,40,30), (50,10,40)]
+    >>> octahedron_relabeled = PySimplicial.utils.relabel(octahedron_)
+    >>> print(f"Octahedron={octahedron_relabeled}")
+    Octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    """
+
     map = {}
     n_tris = []
     for a,b,c in tris:
@@ -18,9 +42,27 @@ def converter_for_gnn(tris):
     """
     Here we calculate the matrix from all vertices of tris-mesh, sum it and return:
 
-    return A / (s + 1e-8), L # A / 10 (we got matrix B), L
+    Parameters
+    ----------
+    
+    tris: list
+        Triangle mesh list
 
-    where: 
+    Returns
+    -------
+
+    torch.Tensor:
+        Normalized adjacency matrix of shape
+        
+        A / (s + 1e-8)
+
+    torch.Tensor:
+        Node feature matrix of shape
+
+        L
+
+    Notes
+    -----
 
     num_nodes = max(max(t) for t in tris)
 
@@ -30,6 +72,19 @@ def converter_for_gnn(tris):
 
     s = A.sum()
 
+    Examples
+    --------
+
+    >>> converter_TNN_2D = PySimplicial.utils.converter_for_tnn(relabel_, 6)
+    >>> print("CONVERTER TNN")
+    >>> print(converter_TNN_2D)
+    CONVERTER TNN
+    tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
+        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+        [0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000]])
     """
     tris = relabel(tris) # we make it so that the difference between the vertices in the list is not so big (let's say like [1,49])
     num_nodes = max(max(t) for t in tris) + 1 

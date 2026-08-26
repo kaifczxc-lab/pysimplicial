@@ -40,7 +40,7 @@ Thanks for your interest! All contributions are welcome: bug reports, documentat
 
 * Improve documentation of specific functions (generators, Pachner Moves)
 
-* Add docstring examples
+* Add docstring examples (in NumPy style)
 
 * Optimization
 
