@@ -68,23 +68,29 @@ def converter_for_gnn(tris):
 
     A = torch.zeros((num_nodes, num_nodes))
     
-    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1)
-
+    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1
     s = A.sum()
 
     Examples
     --------
 
-    >>> converter_TNN_2D = PySimplicial.utils.converter_for_tnn(relabel_, 6)
-    >>> print("CONVERTER TNN")
-    >>> print(converter_TNN_2D)
-    CONVERTER TNN
-    tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
-        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
-        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
-        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
-        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
-        [0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000]])
+    >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    >>> converter_GNN_2D = PySimplicial.utils.converter_for_gnn(relabel_)
+    >>> print("CONVERTER GNN")
+    >>> print(converter_GNN_2D)
+    CONVERTER GNN
+    (tensor([[0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000],
+        [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
+        [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
+        [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
+        [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
+        [0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000]]), tensor([[0.1667, 1.0000],
+        [0.1667, 1.0000],
+        [0.1667, 1.0000],
+        [0.1667, 1.0000],
+        [0.1667, 1.0000],
+        [0.1667, 1.0000]]))
+
     """
     tris = relabel(tris) # we make it so that the difference between the vertices in the list is not so big (let's say like [1,49])
     num_nodes = max(max(t) for t in tris) + 1 
@@ -98,7 +104,38 @@ def converter_for_gnn(tris):
 
 def converter_for_tnn(tris, N):
     """
-    Here we calculate the balanced and normalized adjacency matrix from tris-mesh data
+    Here we calculate the symmetric normalized adjacency matrix from tris-mesh data
+
+    Parameters
+    ----------
+
+    tris: list
+        Triangle mesh list
+    
+    N: int
+        torch.zeros matrix N x N
+
+    Returns
+    -------
+
+    torch.Tensor:
+        Normalized adjacency matrix of shape 
+
+    Examples
+    --------
+
+    >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    >>> converter_TNN_2D = PySimplicial.utils.converter_for_tnn(relabel_, 6)
+    >>> print("CONVERTER TNN")
+    >>> print(converter_TNN_2D)
+    CONVERTER TNN
+    tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
+        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+        [0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000]])
+
     """
     tris = relabel(tris)
     A = torch.zeros((N,N))
@@ -140,6 +177,16 @@ def converter_for_mlp(tris, return_g=False):
     if return_g=True => return F, V, E, g, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
 
     else: return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+
+    Examples
+    --------
+
+    >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    >>> converter_MLP_2D = PySimplicial.utils.converter_for_mlp(relabel_, return_g=True)
+    >>> print("CONVERTED MLP")
+    >>> print(converter_MLP_2D)
+    CONVERTED MLP
+    (8, 6, 12, 0, 0, 6, 0, 0, 4.0, 1.3333333333333333)
     """
 
     F = len(tris) # In example of octahedron: F=8
@@ -182,6 +229,31 @@ def converter_for_mlp(tris, return_g=False):
 
 
 def relabel_3D(tetrahedron):
+    """
+    Renumber vertices of a tetrahedrons mesh to consecutive integers starting from 0
+
+    Parameters
+    ----------
+
+    tetrahedron: list
+        Tetrahedrons mesh list
+    
+    Returns
+    -------
+
+    list of tuple:
+        Renumbered tetrahedrons mesh list
+    
+    Examples
+    --------
+
+    >>> tetrahedron_for_relabel = [(100,200,300,400),(0,200,300,400),(0,100,300,400),(0,100,200,400),(0,100,200,300)]
+    >>> relabel_3D_ = PySimplicial.utils.relabel_3D(tetrahedron_for_relabel)
+    >>> print("RELABEL 3D")
+    >>> print(relabel_3D_)
+    RELABEL 3D
+    [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+    """
     map = {}
     n_tetrahedron = []
     for a,b,c,d in tetrahedron:
@@ -196,17 +268,54 @@ def converter_for_gnn_3D(tetrahedron):
     """
     Here we calculate the matrix from all vertices of tetrahedron-mesh, sum it and return:
 
-    return A / (s + 1e-8), L # A / 10 (we got matrix B), L
+    Parameters
+    ----------
+    
+    tetrahedron: list
+        tetrahedron mesh list
 
-    where: 
+    Returns
+    -------
+
+    torch.Tensor:
+        Normalized adjacency matrix of shape
+        
+        A / (s + 1e-8)
+
+    torch.Tensor:
+        Node feature matrix of shape
+
+        L
+
+    Notes
+    -----
 
     num_nodes = max(max(t) for t in tetrahedron)
 
     A = torch.zeros((num_nodes, num_nodes))
     
-    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1)
+    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1
 
     s = A.sum()
+
+    Examples
+    --------
+
+    >>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+    >>> converter_GNN_3D = PySimplicial.utils.converter_for_gnn_3D(relabel_3D_)
+    >>> print("CONVERTER GNN 3D")
+    >>> print(converter_GNN_3D)
+    CONVERTER GNN 3D
+    (tensor([[0.0000, 0.0500, 0.0500, 0.0500, 0.0500],
+            [0.0500, 0.0000, 0.0500, 0.0500, 0.0500],
+            [0.0500, 0.0500, 0.0000, 0.0500, 0.0500],
+            [0.0500, 0.0500, 0.0500, 0.0000, 0.0500],
+            [0.0500, 0.0500, 0.0500, 0.0500, 0.0000]]), tensor([[0.2000, 1.0000],
+            [0.2000, 1.0000],
+            [0.2000, 1.0000],
+            [0.2000, 1.0000],
+            [0.2000, 1.0000]]))
+
 
     """
     tetrahedron = relabel_3D(tetrahedron)
@@ -222,7 +331,37 @@ def converter_for_gnn_3D(tetrahedron):
 
 def converter_for_tnn_3D(tetrahedron, N):
     """
-    Here we calculate the balanced and normalized adjacency matrix from tetrahedrons-mesh data
+    Here we calculate the symmetric normalized adjacency matrix from tetrahedron-mesh data
+
+    Parameters
+    ----------
+
+    tetrahedron: list
+        Tetrahedrons mesh list
+    
+    N: int
+        torch.zeros matrix N x N
+
+    Returns
+    -------
+
+    torch.Tensor:
+        Normalized adjacency matrix of shape 
+
+    Examples
+    --------
+    >>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+    >>> converter_TNN_3D = PySimplicial.utils.converter_for_tnn_3D(relabel_3D_, 6)
+    >>> print("CONVERTER TNN 3D")
+    >>> print(converter_TNN_3D)
+    CONVERTER TNN 3D
+    tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
+            [0.2500, 0.0000, 0.2500, 0.2500, 0.2500, 0.0000],
+            [0.2500, 0.2500, 0.0000, 0.2500, 0.2500, 0.0000],
+            [0.2500, 0.2500, 0.2500, 0.0000, 0.2500, 0.0000],
+            [0.2500, 0.2500, 0.2500, 0.2500, 0.0000, 0.0000],
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000]])
+
     """
     tetrahedron = relabel_3D(tetrahedron)
     A = torch.zeros((N,N))
@@ -236,11 +375,11 @@ def converter_for_tnn_3D(tetrahedron, N):
 
 def converter_for_mlp_3D(tetrahedron, return_x=False):
     """
-    Here we calculate the Histogram of vertex degrees, euler's characteristics, tris_per_vertex (F / V) and average deegree number
+    Here we calculate the Histogram of vertex degrees, euler's characteristics, tetrahedron_per_vertex (F / V) and average deegree number
 
     Histogram of verted degrees algorithm: 
         
-        >>> get the degree count for every node in tris
+        >>> get the degree count for every node in tetrahedron
 
         >>> count how many nodes share each degree value
     
@@ -250,7 +389,7 @@ def converter_for_mlp_3D(tetrahedron, return_x=False):
 
         >>> x = V - E + F = 2 - 2g
     
-    Calculating tris_per_vertex:
+    Calculating tetrahedron_per_vertex:
 
         >>> Number of faces / unique vertices
 
@@ -265,6 +404,14 @@ def converter_for_mlp_3D(tetrahedron, return_x=False):
 
     else: return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
 
+    Examples
+    --------
+    >>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+    >>> converter_MLP_3D = PySimplicial.utils.converter_for_mlp_3D(relabel_3D_, return_x=True)
+    >>> print("CONVERTED MLP 3D")
+    >>> print(converter_MLP_3D)
+    CONVERTED MLP 3D
+    (10, 5, 10, 0, 0, 5, 0, 0, 4.0, 2.0)
     """
     T = len(tetrahedron)
     # In example of octahedron: F=8

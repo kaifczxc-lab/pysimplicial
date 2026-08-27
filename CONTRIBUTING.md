@@ -32,6 +32,8 @@ Thanks for your interest! All contributions are welcome: bug reports, documentat
 
 * Implement a strict Frobenius algebra checker
 
+* Add self-loops into converters
+
 * Write a code whose state-sum will show invariance to triangulations (that is, apply the axioms of commutative Frobenius algebra, count the numbers, and use the state-sum function before and after triangulations)
 
 * Add Lens spaces L(p,q) generator
