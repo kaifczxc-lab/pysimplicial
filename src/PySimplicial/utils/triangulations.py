@@ -1,7 +1,29 @@
 import networkx
 import matplotlib.pyplot as plt
+import mpl_toolkits
+
 
 def visualize_triangulation_2D(tris): # 2D visualization
+    """
+    This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
+
+    Parameters
+    ----------
+
+    tris: list of tuple
+    Triangles mesh list
+
+    Returns
+    -------
+
+    Visualized figure with using matplotlib
+    
+    Examples
+    --------
+
+    The example can be found in official pysimplicial repository in Tutorials/showcase
+
+    """
     G = networkx.Graph() # create empty graph
     for a,b,c in tris: # add edges from triangle
         G.add_edge(a,b)
@@ -14,9 +36,31 @@ def visualize_triangulation_2D(tris): # 2D visualization
     plt.tight_layout()
     plt.show()
 
-def visualize_triangulation_3D(tris): # 3D visualization
+def visualize_triangulation_3D(tetrahedron): # 3D visualization
+    """
+    This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
+
+    Does not implement 3D visualization, the function simply accepts a tetrahedron with 4 vertices instead of a triangle with 3 vertices.
+
+    Parameters
+    ----------
+
+    tetrahedron: list of tuple
+    Tetrahedrons mesh list
+
+    Returns
+    -------
+
+    Visualized figure with using matplotlib
+    
+    Examples
+    --------
+
+    The example can be found in official pysimplicial repository in Tutorials/showcase
+
+    """
     G = networkx.Graph() # create empty graph
-    for a,b,c,d in tris: # add edges from triangle
+    for a,b,c,d in tetrahedron: # add edges from triangle
         G.add_edge(a,b)
         G.add_edge(a,c)
         G.add_edge(a,d)

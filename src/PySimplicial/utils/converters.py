@@ -3,6 +3,9 @@
 
 import torch
 from collections import defaultdict
+from collections import Counter
+import random
+import PySimplicial.utils as ps
 
 def relabel(tris):
     """
@@ -464,3 +467,145 @@ def converter_for_mlp_3D(tetrahedron, return_x=False):
         return F, V, E, x, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
     else:
         return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+
+
+def chain_2D(base, label, K, p_13=0.35, p_22=0.55, p_31=0.10, return_stats=True):
+    """
+    chain is the one of the most important slice of dataset generation
+    
+    in foundation of this function we have Markov chain algorithm: 
+    
+    P(X_n+1 = x_n+1 | X_n = x_n, X_n-1 = x_n-1, ... , X_0 = x_0) = P(X_n+1 = x_n+1 | X_n = x_n)
+    
+    This algorithm models transitions from one state to another
+
+    The sum of all Pachner Moves chances must not exceed 1
+
+    Parameters
+    ----------
+
+    base: list of tuple
+        Figure (torus, triangle)
+    
+    label: int
+        The genus of figure
+
+        out.append((current, label)) (where current - figure with using pachner move and label is id of this figure)
+
+    K: int
+        Amount of figure's what you want to be returned
+    
+    p_13: int
+        Chance of pachner move 1-3 (NEED TO BE 0.0-1.0)
+    
+    p_31: int
+        Chance of pachner move 3-1 (NEED TO BE 0.0-1.0)
+    
+    p_22: int
+        Chance of pachner move 2-2 (NEED TO BE 0.0-1.0)
+
+    return_stats: boolean
+        Calculates how much pachner moves of all type's has been done by this function
+        if true: return out, stats_1_3, stats_2_2, stats_3_1
+        if false: return out 
+    """
+    out = []
+    current = base
+    expected_genus = ps.compute_genus_2D(current) # lock genus at start
+    stats_1_3, stats_2_2, stats_3_1 = 0, 0, 0
+    for _ in range(K):
+        r = random.random()
+        if r < p_13:
+            candidate = ps.move_1_3(current)
+            stats_1_3 += 1
+        elif r < p_13 + p_31:
+            candidate = ps.move_3_1(current)
+            stats_3_1 += 1
+            if candidate is None:
+                candidate = ps.move_2_2(current)
+                stats_2_2 += 1
+        elif r < p_13 + p_31 + p_22:
+            candidate = ps.move_2_2(current)
+            stats_2_2 += 1
+        if ps.compute_genus_2D(candidate) == expected_genus:
+            current = candidate
+        out.append((current, label))
+    if return_stats:
+        return out, stats_1_3, stats_2_2, stats_3_1
+    else:
+        return out
+
+def chain_3D(base, label, K, p_14 = 0.25, p_41=0.15, p_32=0.40, p_23=0.20, return_stats=True):
+    """
+    chain is the one of the most important slice of dataset generation
+    
+    in foundation of this function we have Markov chain algorithm: 
+    
+    P(X_n+1 = x_n+1 | X_n = x_n, X_n-1 = x_n-1, ... , X_0 = x_0) = P(X_n+1 = x_n+1 | X_n = x_n)
+    
+    This algorithm models transitions from one state to another
+
+    The sum of all Pachner Moves chances must not exceed 1
+
+    Parameters
+    ----------
+
+    base: list of tuple
+        Figure (torus, triangle)
+    
+    label: int
+        The genus of figure
+
+        out.append((current, label)) (where current - figure with using pachner move and label is id of this figure)
+
+    K: int
+        Amount of figure's what you want to be returned
+    
+    p_14: int
+        Chance of pachner move 1-4 (NEED TO BE 0.0-1.0)
+    
+    p_41: int
+        Chance of pachner move 4-1 (NEED TO BE 0.0-1.0)
+    
+    p_23: int
+        Chance of pachner move 2-3 (NEED TO BE 0.0-1.0)
+
+    p_32: int
+        Chance of pachner move 3-2 (NEED TO BE 0.0-1.0)
+
+    return_stats: boolean
+        Calculates how much pachner moves of all type's has been done by this function
+        if true: return out, stats_1_3, stats_2_2, stats_3_1
+        if false: return out 
+    """
+    out = []
+    current = base
+    expected_connected_components = ps.compute_connected_components_3D(current)
+    stats_1_4, stats_4_1, stats_2_3, stats_3_2 = 0, 0, 0, 0
+    for _ in range(K):
+        r = random.random()
+        if r < p_14:
+            candidate = ps.move_1_4(current)
+            stats_1_4 += 1
+        elif r < p_14 + p_41:
+            candidate = ps.move_4_1(current)
+            stats_4_1 += 1
+            if candidate is None:
+                candidate = ps.move_1_4(current)
+                stats_1_4 += 1
+        elif r < p_14 + p_41 + p_23:
+            candidate = ps.move_2_3(current)
+            stats_2_3 += 1
+        elif r < p_14 + p_41 + p_23 + p_32:
+            candidate = ps.move_3_2(current)
+            stats_3_2 += 1
+            if candidate is None:
+                candidate = ps.move_2_3(current)
+                stats_2_3 += 1
+            if ps.compute_connected_components_3D(candidate) == expected_connected_components:
+                current = candidate 
+            out.append((current, label))
+    if return_stats:
+        return out, stats_1_4, stats_4_1, stats_2_3, stats_3_2 
+    else:
+        return out

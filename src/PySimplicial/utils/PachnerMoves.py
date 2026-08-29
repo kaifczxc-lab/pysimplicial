@@ -3,6 +3,38 @@ import random
 from collections import Counter
 
 def move_2_2(tris):
+    """
+    This function implements Pachner Move type 2-2
+
+    The 2-2 move is applied to adjacent triangles connected by a common interior face, forming a quadrilateral. The function replaces the common face with the opposite diagonal of the quadrilateral, resulting in two new triangles covering the same area
+    
+    Parameters
+    ----------
+
+    tris: list of tuple
+        Triangles mesh list
+
+    Returns
+    -------
+
+    new_triangles: list of tuple
+        tris but with 2-2 Pachner move
+
+    tris: list of tuple
+        If we couldn't find a candidate for a 2-2 Pachner move (=flip), then we return the original set, that is, we look for an edge that belongs to exactly two triangles (len(tris) == 2), this is the candidate for the flip, otherwise, we return the same figure
+
+    
+    Examples
+    --------
+
+    >>> Pachner_move_2_2 = move_2_2(octahedron)
+    >>> print(f"Basic octahedron={octahedron}")
+    >>> print(f"Pachner_move_2_2 Octahedron={Pachner_move_2_2}")
+    >>> visualize_triangulation_2D(Pachner_move_2_2)
+    Basic octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    Pachner_move_2_2 Octahedron=[(0, 1, 2), (0, 2, 3), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 1, 4), (3, 0, 5), (0, 4, 5)]
+    
+    """
     # we need to construct a mapping : edge -> list of tris containing it
     ett = defaultdict(list) # edge to tris
     for idx, (a,b,c) in enumerate(tris): # first triangle: (0, (0,1,2)) ; second triangle: (1, (0,2,3))
