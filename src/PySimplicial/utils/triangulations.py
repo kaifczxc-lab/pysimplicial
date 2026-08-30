@@ -11,7 +11,7 @@ def visualize_triangulation_2D(tris): # 2D visualization
     ----------
 
     tris: list of tuple
-    Triangles mesh list
+        Triangles mesh list
 
     Returns
     -------
@@ -46,7 +46,7 @@ def visualize_triangulation_3D(tetrahedron): # 3D visualization
     ----------
 
     tetrahedron: list of tuple
-    Tetrahedrons mesh list
+        Tetrahedrons mesh list
 
     Returns
     -------

@@ -24,8 +24,6 @@ Thanks for your interest! All contributions are welcome: bug reports, documentat
 
 * Evaluate and improve the converters for GNN/TNN/MLP. Compare them with standard preprocessing pipelines from PyTorch Geometric or DGL, and propose better normalization schemes, feature vectors, or output formats if needed
 
-* Find out why triangulation visualization sometimes varies (perhaps because the visualization is in 2D, or maybe something with Pachner Moves)
-
 * Improve documentation/examples
 
 ### Research ideas

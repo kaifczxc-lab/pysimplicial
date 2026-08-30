@@ -6,12 +6,12 @@ def move_2_2(tris):
     """
     This function implements Pachner Move type 2-2
 
-    The 2-2 move is applied to adjacent triangles connected by a common interior face, forming a quadrilateral. The function replaces the common face with the opposite diagonal of the quadrilateral, resulting in two new triangles covering the same area
+    The 2-2 move is applied to adjacent triangles connected by a common interior edge, forming a quadrilateral. The function replaces the common edge with the opposite diagonal of the quadrilateral, resulting in two new triangles covering the same area
     
     Parameters
     ----------
 
-    tris: list of tuple
+    tris: list of tuples of three ints
         Triangles mesh list
 
     Returns
@@ -30,7 +30,6 @@ def move_2_2(tris):
     >>> Pachner_move_2_2 = move_2_2(octahedron)
     >>> print(f"Basic octahedron={octahedron}")
     >>> print(f"Pachner_move_2_2 Octahedron={Pachner_move_2_2}")
-    >>> visualize_triangulation_2D(Pachner_move_2_2)
     Basic octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
     Pachner_move_2_2 Octahedron=[(0, 1, 2), (0, 2, 3), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 1, 4), (3, 0, 5), (0, 4, 5)]
     
@@ -66,6 +65,32 @@ def move_2_2(tris):
     return tris
 
 def move_1_3(tris):
+    """
+    This function implements Pachner Move type 1-3
+
+    Divides the triangle into three smaller ones by connecting them with one common vertex (that is, to determine the correctness of the move 1-3, we must ensure that there is a new vertex and it is connected to the other 3)
+    
+    Parameters
+    ----------
+
+    tris: list of tuples of three ints
+        Triangles mesh list
+
+    Returns
+    -------
+
+    n_triangles: list of tuple
+        New triangles mesh list with move 1-3
+
+    Examples
+    --------
+
+    >>> Pachner_move_1_3 = PySimplicial.utils.move_1_3(octahedron)
+    >>> print(f"Basic octahedron={octahedron}")
+    >>> print(f"Octahedron with move 3-1={Pachner_move_1_3}")
+    Basic octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    Octahedron with move 3-1=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 6), (1, 4, 6), (5, 4, 6)]
+    """
     index = random.randrange(len(tris))
     a,b,c = tris[index]
     n_v = max(max(t) for t in tris) + 1 # +1 gives guaranteed unique ID
@@ -74,6 +99,32 @@ def move_1_3(tris):
     return n_triangles 
 
 def move_3_1(tris):
+    """
+    This function implements Pachner Move type 3-1
+
+    The move 3-1 is the inverse of 1-3, removing an interior vertex of degree 3, surrounded by three triangles with no other elements attached to their faces, and combines them into a single triangle
+
+    Parameters
+    ----------
+
+    tris: list of tuples of three ints
+        Triangles mesh list
+
+    Returns
+    -------
+
+    new_triangles: list of tuple
+        Same triangles mesh list but with move 3-1
+
+    Examples
+    --------
+
+    >>> Pachner_move_3_1 = PySimplicial.utils.move_3_1(Pachner_move_1_3)
+    >>> print(f"Basic octahedron={octahedron}")
+    >>> print(f"Octahedron with move 3-1={Pachner_move_3_1}")
+    Basic octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    Octahedron with move 3-1=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+    """
     e_count = Counter()
     for (a,b,c) in tris:
         for edge in [tuple(sorted((a,b))), tuple(sorted((b,c))), tuple(sorted((a,c)))]:
@@ -105,6 +156,33 @@ def move_3_1(tris):
     return None
 
 def move_1_4(tetrahedron):
+    """
+    This function implements Pachner Move type 1-4
+
+    The Pachner move 1-4 divides one tetrahedron into four smaller tetrahedrons by introducing a new internal vertex. The boundary remains unchanged, but three edges and one vertex are added to the original tetrahedron
+
+    Parameters
+    ----------
+
+    tetrahedron: list of tuples of four ints
+        Tetrahedrons mesh list
+
+    Returns
+    -------
+
+    n_triangles: list of tuple
+        Same tetrahedrons mesh list but with move 1-4
+
+    Examples
+    --------
+    >>> one_tetrahedron = [(0, 1, 2, 3)]
+    >>> Pachner_move_1_4 = PySimplicial.utils.move_1_4(one_tetrahedron)
+    >>> print(f"tetrahedron={one_tetrahedron}")
+    >>> print(f"same tetrahedron but with move 1-4={Pachner_move_1_4}")
+    tetrahedron=[(0, 1, 2, 3)]
+    same tetrahedron but with move 1-4=[(0, 1, 2, 4), (0, 1, 3, 4), (0, 2, 3, 4), (1, 2, 3, 4)]
+    
+    """
     index = random.randrange(len(tetrahedron))
     a,b,c,d = tetrahedron[index]
     n_v = max(max(t) for t in tetrahedron) + 1 # +1 gives guaranteed unique ID
@@ -113,6 +191,34 @@ def move_1_4(tetrahedron):
     return n_triangles 
 
 def move_4_1(tetrahedron):
+    """
+    This function implements Pachner Move type 4-1
+
+    Move 4-1 is the inverse of 1-4 and removes an internal vertex that is a common vertex of exactly four tetrahedra with no other internal simplices, collapsing them back into a single tetrahedron, thereby reducing the number of tetrahedra by three, removing one vertex and three edges
+    
+    Parameters
+    ----------
+
+    tetrahedron: list of tuples of four ints
+        Tetrahedrons mesh list
+    
+    Returns
+    -------
+
+    new_triangles: list of tuple
+        Same triangles mesh list but with move 4-1 (This move will work for you with 100% probability after using 1-4)
+
+    Examples
+    --------
+
+    >>> one_tetrahedron = [(0, 1, 2, 3)]
+    >>> Pachner_move_1_4 = PySimplicial.utils.move_1_4(one_tetrahedron)
+    >>> Pachner_move_4_1 = PySimplicial.utils.move_4_1(Pachner_move_1_4)
+    >>> print(f"Pachner_move_1_4={Pachner_move_1_4}")
+    >>> print(f"Pachner_move_4_1={Pachner_move_4_1}")
+    Pachner_move_1_4=[(0, 1, 2, 4), (0, 1, 3, 4), (0, 2, 3, 4), (1, 2, 3, 4)]
+    Pachner_move_4_1=[(0, 1, 2, 3)]
+    """
     vert_tetrahedron = defaultdict(list)
     for i, (a,b,c,d) in enumerate(tetrahedron):
         for v in (a,b,c,d):
@@ -137,12 +243,41 @@ def move_4_1(tetrahedron):
 
 
 def move_2_3(tetrahedron):
+    """
+    This function implements Pachner Move type 2-3
+
+    Move 2-3 increases the number of tetrahedra by one and adds one new edge, preserving the number of vertices and locally modifying the faces
+
+    Parameters
+    ----------
+
+    tetrahedron: list of tuples of four ints
+        Tetrahedrons mesh list
+    
+    Returns
+    -------
+    new_tetrahedrons: list of tuple
+        if there are common faces for two tetrahedrons
+    
+    tetrahedron: list of tuple
+        if there are no common faces for two tetrahedrons
+
+    Examples:
+
+    >>> tetrahedron = [(0, 1, 2, 3),(0, 1, 2, 4)] # Visualize original figure
+    >>> Pachner_move_2_3 = PySimplicial.utils.move_2_3(tetrahedron) # visualize the same figure but with Pachner Move 2-3 triangulation
+    >>> print(f"basic tetrahedron={tetrahedron}")
+    >>> print(f"same tetrahedron but with move 2-3={Pachner_move_2_3}")
+    basic tetrahedron=[(0, 1, 2, 3), (0, 1, 2, 4)]
+    same tetrahedron but with move 2-3=[(0, 1, 3, 4), (1, 2, 3, 4), (0, 2, 3, 4)]
+
+    """
     # we need to construct a mapping : edge -> list of tris containing it
     ett = defaultdict(list) # edge to tris
     for idx, (a,b,c,d) in enumerate(tetrahedron):
         for edge in [tuple(sorted((a,b,c))), tuple(sorted((a,b,d))), tuple(sorted((a,c,d))), tuple(sorted((b,c,d)))]:
             ett[edge].append(idx) # add the index of the current triangle to the list of triangles that own this edge
-    exist=set(ett.keys()) # set of all exist edges ; it is necessary to check whether a new diagonal already exists
+    #exist=set(ett.keys()) # set of all exist edges ; it is necessary to check whether a new diagonal already exists
     # choose an edge that has exactly two tris
     inter=[e for e, idx in ett.items() if len(idx) == 2]
     random.shuffle(inter)
@@ -162,9 +297,42 @@ def move_2_3(tetrahedron):
     return tetrahedron
 
 def move_3_2(tetrahedron):
+    """
+    This function implements Pachner Move type 3-1
+    
+    The 3-2 move is the inverse of the 2-3 move, replacing three tetrahedra meeting on an internal edge between two tetrahedra sharing a face, reducing the number of tetrahedra by one, and removing one edge without changing vertices
+    
+    Parameters
+    ----------
+
+    tetrahedron: list of tuples of four ints
+        Tetrahedrons mesh list
+
+    Returns
+    -------
+
+    result: list of tuple of four ints
+        If there's a common edge that belongs to exactly three tetrahedra
+    
+    tetrahedron: list of tuple of four ints
+        If there is no common edge that belongs to exactly three tetrahedra
+    
+    Examples
+    --------
+
+    >>> tetrahedron = [(0, 1, 2, 3),(0, 1, 2, 4)] # Visualize original figure
+    >>> Pachner_move_2_3 = PySimplicial.utils.move_2_3(tetrahedron) # visualize the same figure but with Pachner Move 2-3 triangulation
+    >>> Pachner_move_3_2 = PySimplicial.utils.move_3_2(Pachner_move_2_3) # return this modify to basic form
+    >>> print(f"basic tetrahedron={tetrahedron}")
+    >>> print(f"same tetrahedron but with move 2-3={Pachner_move_2_3}")
+    >>> print(f"inverse, move 3-2={Pachner_move_3_2}")
+    basic tetrahedron=[(0, 1, 2, 3), (0, 1, 2, 4)]
+    same tetrahedron but with move 2-3=[(0, 1, 3, 4), (1, 2, 3, 4), (0, 2, 3, 4)]
+    inverse, move 3-2=[(0, 1, 2, 3), (0, 1, 2, 4)]
+    """
     edge_to_tetrahedrons = defaultdict(list)
     for idx, tetrahedron_ in enumerate(tetrahedron):
-        a, b, c, d = tetrahedron_
+        a,b,c,d = tetrahedron_
         for edge in [(a,b), (a,c), (a,d), (b,c), (b,d), (c,d)]:
             edge = tuple(sorted(edge))
             edge_to_tetrahedrons[edge].append(idx)
@@ -183,9 +351,9 @@ def move_3_2(tetrahedron):
         all_ext = list({x for pair in exts for x in pair})
         if len(all_ext) != 3:
             continue
-        a, b, c = sorted(all_ext)
-        new_t1 = tuple(sorted((a, b, c, u)))
-        new_t2 = tuple(sorted((a, b, c, v)))
+        a,b,c = sorted(all_ext)
+        new_t1 = tuple(sorted((a,b,c,u)))
+        new_t2 = tuple(sorted((a,b,c,v)))
         result = [t for i, t in enumerate(tetrahedron) if i not in tetrahedron_idx]
         result.extend([new_t1, new_t2])
         return result
