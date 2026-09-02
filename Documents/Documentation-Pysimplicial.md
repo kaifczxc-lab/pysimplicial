@@ -4,17 +4,17 @@ pysimplicial is a lightweight Python package for working with simplicial complex
 
 The current version of the library (0.1.2) has the following set of functions:
 
-* Tools for visualization: visualize_triangulation_3D, visualize_triangulation_2D
+* [Tools for visualization](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#tools-for-visualization): [visualize_triangulation_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_3dtetrahedron), [visualize_triangulation_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_2dtris)
 
-* Pachner Moves: move_2_2, move_1_3, move_3_1, move_1_4, move_2_3, move_4_1, move_3_2
+* [Pachner Moves](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#pachner-moves): [move_2_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_2tris), [move_1_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_3tris), [move_3_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_1tris), [move_1_4](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_4tetrahedron), [move_2_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_3tetrahedron), [move_4_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_4_1tetrahedron), [move_3_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_1tris-1)
 
-* Data Converters for ML: chain_2D, chain_3D, converter_for_gnn, converter_for_gnn_3D, converter_for_mlp, converter_for_mlp_3D, converter_for_tnn, converter_for_tnn_3D
+* [Data Converters for ML](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converters): [chain_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#chain_2dbase-label-k-p_13035-p_22055-p_31010-return_statstrue), [chain_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#chain_3dbase-label-k-p_14--025-p_41015-p_32040-p_23020-return_statstrue), [converter_for_gnn](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_gnntris), [converter_for_gnn_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_gnn_3dtetrahedron), [converter_for_mlp](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_mlptris-return_gfalse), [converter_for_mlp_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_mlp_3dtetrahedron-return_xfalse), [converter_for_tnn](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_tnntris-n), [converter_for_tnn_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_tnn_3dtetrahedron-n), [relabel](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#relabeltris), [relabel_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#relabel_3dtetrahedron)
 
-* Generators: combinatorial_torus, combinatorial_torus_3D, geometry_bottle_of_klein,geometry_torus
+* [Generators](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#generators): [combinatorial_torus](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#combinatorial_torusm-n), [combinatorial_torus_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#combinatorial_torus_3dm-n-p), [geometry_bottle_of_klein](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#geometry_bottle_of_kleinu-v),[geometry_torus](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#geometry_torusmnrr)
 
-* Tools for computing euler's characteristics: compute_connected_components_3D, compute_genus_2D
+* [Tools for computing euler's characteristics](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#tools-for-computing-eulers-characteristics): [compute_connected_components_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#compute_connected_components_3dtetrahedron_mesh3d), [compute_genus_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#compute_genus_2dtriangle_mesh2d)
 
-* Experimental tools: state_sum, graph
+* [Experimental tools](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#experimental-tools): [state_sum](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#state_sumc-b_inv-v_p-g_edges-open_ports-type2d), [graph](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#graphfigure-type2d--3d)
 
 ---
 
@@ -190,7 +190,7 @@ Octahedron with move 3-1=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1),
 ---
 
 <div align="center">
-  <h2>move_3_1(tris)</h2>
+  <h2>move_3_2(tetrahedrons)</h2>
 </div>
 
 

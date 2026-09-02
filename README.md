@@ -69,7 +69,7 @@ result=(8, 6, 12, 0, 0, 6, 0, 0, 4.0, 1.3333333333333333)
 
 See [showcase notebook](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Tutorials/showcase.ipynb) to see how all functions work (visualization & logs)
 
-Full documentation will be available later
+Documentation can be found in [Documents\Documentation-Pysimplicial](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md)
 
 ## Contributing
 
