@@ -190,7 +190,7 @@ Octahedron with move 3-1=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1),
 ---
 
 <div align="center">
-  <h2>move_3_2(tetrahedrons)</h2>
+  <h2>move_3_1(tris)</h2>
 </div>
 
 
@@ -355,7 +355,7 @@ same tetrahedron but with move 2-3=[(0, 1, 3, 4), (1, 2, 3, 4), (0, 2, 3, 4)]
 ---
 
 <div align="center">
-  <h2>move_3_1(tris)</h2>
+  <h2>move_3_2(tetrahedrons)</h2>
 </div>
 
 
