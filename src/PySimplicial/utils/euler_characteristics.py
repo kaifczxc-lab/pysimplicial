@@ -12,7 +12,7 @@ def compute_genus_2D(triangle_mesh2D):
 
     Parameters
     ----------
-    triangle_mesh2D : list of tuple
+    triangle_mesh2D: list of tuple
 
         Enter triangulation in form list of triangles
 
@@ -21,7 +21,9 @@ def compute_genus_2D(triangle_mesh2D):
     Returns
     -------
 
-    Natural number that says the genus of the surface
+    g: int
+    
+        Natural number that says the genus of the surface
 
     Examples
     --------
@@ -72,12 +74,14 @@ def compute_connected_components_3D(tetrahedron_mesh3D):
 
         Enter triangulation in form list of tetrahedrons
 
-        Every triangle is a tuple of four integers (vertex indices)
+        Every tetrahedron is a tuple of four integers (vertex indices)
 
     Returns
     -------
 
-    Natural number that says amount of connected components of a 3D space
+    x: int
+
+        Natural number that says amount of connected components of a 3D space
     
     Examples
     --------

@@ -174,7 +174,16 @@ def converter_for_mlp(tris, return_g=False):
 
         >>> 2 * unique edges / unique vertices
 
-    Return
+    Parameters
+    ----------
+
+    tris: list of tuple
+
+        Triangle mesh list
+
+    return_g: boolean
+
+    Returns
     ------
 
     if return_g=True => return F, V, E, g, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
@@ -244,7 +253,7 @@ def relabel_3D(tetrahedron):
     Returns
     -------
 
-    list of tuple:
+    n_tetrahedrons: list of tuple
         Renumbered tetrahedrons mesh list
     
     Examples
@@ -339,7 +348,7 @@ def converter_for_tnn_3D(tetrahedron, N):
     Parameters
     ----------
 
-    tetrahedron: list
+    tetrahedron: list of tuple
         Tetrahedrons mesh list
     
     N: int
@@ -348,7 +357,7 @@ def converter_for_tnn_3D(tetrahedron, N):
     Returns
     -------
 
-    torch.Tensor:
+    A_norm: torch.Tensor
         Normalized adjacency matrix of shape 
 
     Examples
@@ -508,6 +517,12 @@ def chain_2D(base, label, K, p_13=0.35, p_22=0.55, p_31=0.10, return_stats=True)
         Calculates how much pachner moves of all type's has been done by this function
         if true: return out, stats_1_3, stats_2_2, stats_3_1
         if false: return out 
+
+    Returns
+    -------
+
+    out: list of tuple
+        Generated dataset with K amount of figure's with different Pachner Moves
     """
     out = []
     current = base
@@ -577,6 +592,12 @@ def chain_3D(base, label, K, p_14 = 0.25, p_41=0.15, p_32=0.40, p_23=0.20, retur
         Calculates how much pachner moves of all type's has been done by this function
         if true: return out, stats_1_3, stats_2_2, stats_3_1
         if false: return out 
+
+    Returns
+    -------
+    
+    out: list of tuple
+        Generated dataset with K amount of figure's with different Pachner Moves
     """
     out = []
     current = base

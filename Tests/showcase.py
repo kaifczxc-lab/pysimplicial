@@ -1,5 +1,6 @@
 import PySimplicial.utils
 import numpy as np
+import matplotlib.pyplot as plt
 
 octahedron = [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
 tetrahedron = [(0, 1, 2, 3),(0, 1, 2, 4)]
@@ -44,13 +45,12 @@ print("Visualization 9 : applied Pachner movement 4-1 on tris_3D_1_4 (inverse, w
 tris_3D_4_1 = PySimplicial.utils.move_4_1(tris_3D_1_4)
 PySimplicial.utils.visualize_triangulation_3D(tris_3D_4_1)
 
-
 # --------------
 
 # Torus generators part
 # ---------------------
 
-combinatorial_torus_2D = PySimplicial.utils.combinatorial_torus(10,10)
+combinatorial_torus_2D = PySimplicial.utils.combinatorial_torus(3,3)
 print("combinatorial torus 2d")
 print(combinatorial_torus_2D)
 
@@ -58,14 +58,22 @@ geometry_torus_3D = PySimplicial.utils.geometry_torus(3,3,2,1)
 print("geometry torus 3d")
 print(geometry_torus_3D)
 
-combinatorial_torus_3D = PySimplicial.utils.combinatorial_torus_3D(3,3,3)
+combinatorial_torus_3D = PySimplicial.utils.combinatorial_torus_3D(2,2,2)
 print("combinatorial torus 3d")
 print(combinatorial_torus_3D)
 
-u, v = np.meshgrid(np.linspace(0, 2*np.pi, 30),np.linspace(0, 2*np.pi, 30))
+u, v = np.meshgrid(np.linspace(0, 2*np.pi, 5),np.linspace(0, 2*np.pi, 5))
 bottle_of_klein = PySimplicial.utils.geometry_bottle_of_klein(u, v)
 print("bottle of klein")
 print(bottle_of_klein)
+
+print("Bottle of klein visualization")
+u, v = np.meshgrid(np.linspace(0, 2*np.pi, 100),np.linspace(0, 2*np.pi, 100))
+x, y, z = PySimplicial.utils.geometry_bottle_of_klein(u, v)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x, y, z)
+plt.show()
 
 # ---------------------
 

@@ -7,6 +7,9 @@ def visualize_triangulation_2D(tris): # 2D visualization
     """
     This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
 
+    We take a triangle, a list of the form (a,b,c) and distribute each of its vertices (a,b) ; (b,c) ; (c,a), then with the help of spring_layout we build a dict and then visualize it using draw
+
+
     Parameters
     ----------
 
@@ -42,6 +45,8 @@ def visualize_triangulation_3D(tetrahedron): # 3D visualization
 
     Does not implement 3D visualization, the function simply accepts a tetrahedron with 4 vertices instead of a triangle with 3 vertices.
 
+    We take a tetrahedron, a list of the form (a,b,c,d) and distribute each of its vertices, then through spring_layout we build a dict and then visualize it through draw
+    
     Parameters
     ----------
 

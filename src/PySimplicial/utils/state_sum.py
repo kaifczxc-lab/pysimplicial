@@ -9,12 +9,28 @@ def state_sum(C, b_inv, v_p, g_edges, open_ports=(), type="2D"): # pass values f
 
     it implements convolution over triangulation, but by itself does not guarantee topological invariance. Invariance depends on the tensors C and b_inv, which in the trained version may not satisfy the Frobenius axioms. That is, for the correct result you need a fixed Frobenius algebra
     
-    More information can be found in https://github.com/kaifczxc-lab/OCSSN
+    More information can be found in https://github.com/kaifczxc-lab/OCSSN (the description of each parameter is quite complex and sometimes heavily depends on the context)
 
     type == "2D" State-sum for triangles
     
     type == "3D" State-sum for tetrahedrons
 
+    Returns
+    -------
+
+    torch.Tensor or numpy.ndarray
+        Result of the state-sum contraction where rank equals the number of open ports
+
+        
+    Examples
+    --------
+
+    >>> C = np.array([[[1.,0.],[0.,1.]],[[0.,1.],[1.,0.]]])
+    >>> b_inv = np.array([[1.,0.],[0.,1.]])
+    >>> before = state_sum(C, b_inv, [(0,1,2),(3,4,5)], [(0,3),(1,4),(2,5)], ())
+    >>> after = state_sum(C, b_inv, [(0,1,2),(3,4,5)], [(0,4),(1,3),(2,5)], ())
+    >>> print(before, after, np.isclose(before, after))
+    4.0 4.0 True
     """
     if type == "2D":
         ops = [] # main list for opt_einsum, here we will add all arguments
@@ -66,6 +82,24 @@ def graph(figure, type="2D"):
     
     Examples
     --------
+
+    >>> triangles = [(0, 1, 2), (0, 2, 3)]
+    >>> v_p, g_edges, open_ports = ps.graph(triangles, type="2D")
+    >>> print("v_p: ", v_p)
+    >>> print("g_edges: ", g_edges)
+    >>> print("open_ports: ", open_ports)
+    >>> tetrahedrons = [(0, 1, 2, 3),(0, 1, 2, 4)]
+    >>> v_p_3D, g_edges_3D, open_ports_3D = ps.graph(tetrahedrons, type="3D")
+    >>> print("v_p_3D: ", v_p_3D)
+    >>> print("g_edges_3D: ", g_edges_3D)
+    >>> print("open_ports_3D: ", open_ports_3D)
+    v_p:  [(0, 1, 2), (3, 4, 5)]
+    g_edges:  [(2, 3)]
+    open_ports:  [0, 1, 4, 5]
+    v_p_3D:  [(0, 1, 2, 3), (4, 5, 6, 7)]
+    g_edges_3D:  [(0, 4)]
+    open_ports_3D:  [1, 2, 3, 5, 6, 7]
+    
     """
     slot = {} # dictionary who will contain unique ID for every port
     def sid(t,e):
