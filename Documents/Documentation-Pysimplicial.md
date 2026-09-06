@@ -4,7 +4,7 @@ pysimplicial is a lightweight Python package for working with simplicial complex
 
 The current version of the library (0.1.2) has the following set of functions:
 
-* [Tools for visualization](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#tools-for-visualization): [visualize_triangulation_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_3dfigure-fs18-fs26-xlim-1-ylim-1-zlim---1-xlimright1-ylimright1-zlimright1-enable_random_face_colorsfalse-xlabx-axis-ylaby-axis-zlabz-axis-facecolorpurple-edgecolorwhite-custom_posnone-showtrue), [visualize_triangulation_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_2dfigure)
+* [Tools for visualization](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#tools-for-visualization): [visualize_triangulation_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_3dfigure-fs18-fs26-xlim-1-ylim-1-zlim---1-xlimright1-ylimright1-zlimright1-enable_random_face_colorsfalse-xlabx-axis-ylaby-axis-zlabz-axis-facecolorpurple-edgecolorwhite-custom_posnone-showtrue), [visualize_triangulation_2D](https://github.com/kaifczxc-lab/pysimplicial/edit/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_2dfigure-typetriangles)
 
 * [Pachner Moves](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#pachner-moves): [move_2_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_2tris), [move_1_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_3tris), [move_3_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_1tris), [move_1_4](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_4tetrahedron), [move_2_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_3tetrahedron), [move_4_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_4_1tetrahedron), [move_3_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_2tetrahedrons)
 
@@ -30,7 +30,7 @@ Tests:
 * [Tutorials\Pachner_moves](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Tutorials/Pachner_moves.ipynb)
 
 <div align="center">
-  <h2>visualize_triangulation_2D(figure")</h2>
+  <h2>visualize_triangulation_2D(figure, type="Triangles")</h2>
 </div>
 
 This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
@@ -43,6 +43,11 @@ Parameters
 
 figure: list of tuple
 * Triangles mesh list
+
+type: str
+* if type="Triangles" then function work with list of tuple in form of (a,b,c)
+
+* if type="Tetrahedrons" then function work with list of tuple in form of (a,b,c,d)
 
 Returns
 -------
