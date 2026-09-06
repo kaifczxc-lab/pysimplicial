@@ -7,6 +7,7 @@ tetrahedron = [(0, 1, 2, 3),(0, 1, 2, 4)]
 one_tetrahedron = [(0, 1, 2, 3)]
 
 
+
 # Visualize part
 # --------------
 
@@ -27,23 +28,23 @@ tris_2D_2_2 = PySimplicial.utils.move_2_2(tris)
 PySimplicial.utils.visualize_triangulation_2D(tris_2D_2_2)
 
 print("Visualization 5 : basic tetrahedron")
-PySimplicial.utils.visualize_triangulation_3D(one_tetrahedron)
+PySimplicial.utils.visualize_triangulation_2D(one_tetrahedron, type="3D")
 
 print("Visualization 6 : applied Pachner movement 2-3 on basic tetrahedron")
 tris_3D_2_3 = PySimplicial.utils.move_2_3(tetrahedron)
-PySimplicial.utils.visualize_triangulation_3D(tris_3D_2_3)
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_2_3, type="3D")
 
 print("Visualization 7 : applied Pachner movement 3-2 on tris_3D_2_3 (inverse, we should back to basic tetrahedron)")
 tris_3D_3_2 = PySimplicial.utils.move_3_2(tris_3D_2_3)
-PySimplicial.utils.visualize_triangulation_3D(tris_3D_3_2)
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_3_2, type="3D")
 
 print("Visualization 8 : applied Pachner movement 1-4 on basic tetrahedron")
 tris_3D_1_4 = PySimplicial.utils.move_1_4(one_tetrahedron)
-PySimplicial.utils.visualize_triangulation_3D(tris_3D_1_4)
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_1_4, type="3D")
 
 print("Visualization 9 : applied Pachner movement 4-1 on tris_3D_1_4 (inverse, we should back to basic tetrahedron)")
 tris_3D_4_1 = PySimplicial.utils.move_4_1(tris_3D_1_4)
-PySimplicial.utils.visualize_triangulation_3D(tris_3D_4_1)
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_4_1, type="3D")
 
 # --------------
 

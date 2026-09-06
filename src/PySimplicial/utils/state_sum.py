@@ -53,7 +53,7 @@ def state_sum(C, b_inv, v_p, g_edges, open_ports=(), type="2D"): # pass values f
         return opt_einsum.contract(*ops, optimize="greedy")
 
 # Conceptually, this is a rather confusing function in the entire code (it transforms mesh geometry into a combinatorial for tensor network), so I will add a more extensive amount of explanation here, I tried to make it as clear as I could
-def graph(figure, type="2D"):
+def graph(figure):
     """
     A helper function for state-sum that can calculate the number of open ports / vertice ports / glued edges
 
@@ -62,11 +62,6 @@ def graph(figure, type="2D"):
 
     figure: list of tuple
         Tetrahedrons/Triangles mesh list
-    
-    type: str
-        type="2D" for triangles, 3 vertices in list, example: [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
-
-        type="3D" for tetrahedrons, 4 vertices in list, example: [(0, 1, 2, 3),(0, 1, 2, 4)]
 
     Returns
     -------
@@ -109,7 +104,9 @@ def graph(figure, type="2D"):
         # sid() is function for generation a lot of unique ID's, t = triangle number, e = this triangle edge
         # if this both are first time here then we give to it an ordinal number equal to the current length of the dictionary (len(slot), like 0,1,2,3,4,5...
         # this gives us the condition that if two triangles share one edge, they will store a unique port ID for it
-    if type == "2D":
+    if not figure:
+        raise ValueError("figure should not be empty")
+    if len(figure[0]) == 3:
         v_p = [] # vertices ports, list of 3 triangles ID's 
         e_slots = {} # here we will store the connection of vertices
         # on numbered triangles, we sort their 3 edges, all this needed for make edge (2,1) and edge (1,2) similar
@@ -130,7 +127,7 @@ def graph(figure, type="2D"):
             else: # if we have more or less than 2 ports
                 open_ports += s # we just send it into free lists
         return v_p, g_edges, open_ports
-    elif type == "3D":
+    elif len(figure[0]) == 4:
         v_p = []
         e_slots = {}
         for t, (a,b,c,d) in enumerate(figure):
@@ -151,4 +148,5 @@ def graph(figure, type="2D"):
             else:
                 open_ports += s 
         return v_p, g_edges, open_ports
-
+    else:
+        raise ValueError("Unsupported simplex dimension")

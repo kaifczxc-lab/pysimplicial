@@ -4,7 +4,7 @@ pysimplicial is a lightweight Python package for working with simplicial complex
 
 The current version of the library (0.1.2) has the following set of functions:
 
-* [Tools for visualization](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#tools-for-visualization): [visualize_triangulation_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_3dtetrahedron), [visualize_triangulation_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_2dtris)
+* [Tools for visualization](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#tools-for-visualization): [visualize_triangulation_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_3dfigure-fs18-fs26-xlim-1-ylim-1-zlim---1-xlimright1-ylimright1-zlimright1-enable_random_face_colorsfalse-xlabx-axis-ylaby-axis-zlabz-axis-facecolorpurple-edgecolorwhite-custom_posnone-showtru), [visualize_triangulation_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#visualize_triangulation_2dtris)
 
 * [Pachner Moves](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#pachner-moves): [move_2_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_2tris), [move_1_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_3tris), [move_3_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_1tris), [move_1_4](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_4tetrahedron), [move_2_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_3tetrahedron), [move_4_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_4_1tetrahedron), [move_3_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_2tetrahedrons)
 
@@ -30,50 +30,24 @@ Tests:
 * [Tutorials\Pachner_moves](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Tutorials/Pachner_moves.ipynb)
 
 <div align="center">
-  <h2>visualize_triangulation_2D(tris)</h2>
+  <h2>visualize_triangulation_2D(figure, type="Triangles")</h2>
 </div>
-
 
 This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
 
-We take a triangle, a list of the form (a,b,c) and distribute each of its vertices (a,b) ; (b,c) ; (c,a), then through spring_layout we build a dict and then visualize it using draw
+We take a triangle, a list of the form (a,b,c) or (a,b,c,d) and distribute each of its vertices, then with the help of spring_layout we build a dict and then visualize it using draw
+
 
 Parameters
 ----------
 
-tris: list of tuple
+figure: list of tuple
 * Triangles mesh list
 
-Returns
--------
+type: str
+* if type="Triangles" then function work with list of tuple in form of (a,b,c)
 
-Visualized figure with using matplotlib & networkx
-
-Examples
---------
-
-The example can be found in official pysimplicial repository in Tutorials/showcase
-
-
----
-
-<div align="center">
-  <h2>visualize_triangulation_3D(tetrahedron)</h2>
-</div>
-
-
-
-This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
-
-Does not implement 3D visualization, the function simply accepts a tetrahedron with 4 vertices instead of a triangle with 3 vertices.
-
-We take a tetrahedron, a list of the form (a,b,c,d) and distribute each of its vertices, then through spring_layout we build a dict and then visualize it through draw
-
-Parameters
-----------
-
-tetrahedron: list of tuple
-* Tetrahedrons mesh list
+* if type="Tetrahedrons" then function work with list of tuple in form of (a,b,c,d)
 
 Returns
 -------
@@ -84,6 +58,94 @@ Examples
 --------
 
 The example can be found in official pysimplicial repository in Tutorials/showcase
+
+
+---
+
+<div align="center">
+  <h2>visualize_triangulation_3D(figure, fs1=8, fs2=6, xlim=-1, ylim=-1, zlim = -1, xlimright=1, ylimright=1, zlimright=1, enable_random_face_colors=False, xlab="X axis", ylab="Y axis", zlab="Z axis", facecolor="Purple", edgecolor="White", custom_pos=None, show=True)</h2>
+</div>
+
+
+This function draws a figure using matplotlib's 3D projection. To set xyz correctly, it uses spring_layout with dimension = 3 from networkx. This function is still under development, but it works well with Triangles mesh list (a,b,c)
+    
+Parameters
+----------
+
+figure: list of tuple in form of
+* (a,b,c) is triangles mesh list
+
+* (a,b,c,d) is tetrahedrons mesh list
+
+
+figsize=(fs1, fs2): ArrayLike
+* figsize integer numbers
+
+xlim / xlimright: float, optional
+* The left/right xlim in data coordinates
+
+ylim / ylimright: float, optional
+* The left/right ylim in data coordinates
+    
+zlim / zlimright: float, optional
+* The left/right zlim in data coordinates
+
+enable_random_face_colors: boolean
+* if true then ```face_colors = [[random.random() for _ in range(3)] for _ in figure]```
+
+* else: user need to choose his own colors
+
+xlab: str
+* set_xlabel text
+    
+ylab: str
+* set_ylabel text
+    
+zlab: str
+* set_zlabel text
+    
+facecolor: str
+* the figure face color
+    
+* if user make the enable_random_face_colors = False, then user can choose his own color. Standart is "Purple"
+
+edgecolor: str
+* the figure edge color
+
+* if user make the enable_random_face_colors = False, then user can choose his own color. Standart is "White"
+
+custom_pos: Any
+* custom coords position (without spring_layout pos generation)
+    
+show: boolean
+* If true: then user can see visualized by matplotlib figure
+
+* else: return ax, fig
+
+        
+Returns
+-------
+
+Visualized figure
+
+fig & ax: Figure and Axes3D
+
+Examples
+--------
+
+>>> octahedron = [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
+
+>>> PySimplicial.utils.visualize_triangulation_3D(octahedron, enable_random_face_colors=False)
+
+>>> 3d_figure = PySimplicial.utils.move_1_3(octahedron)
+
+>>> returns = PySimplicial.utils.visualize_triangulation_3D(abcd, enable_random_face_colors=False)
+
+>>> print(returns)
+
+(<Figure size 800x600 with 1 Axes>, <Axes3D: xlabel='X axis', ylabel='Y axis', zlabel='Z axis'>)
+    
+---
 
 <div align="center">
   <h1>Pachner Moves</h1>
@@ -1278,12 +1340,6 @@ Parameters
 
 figure: list of tuple
 * Tetrahedrons/Triangles mesh list
-    
-type: str
-
-* type="2D" for triangles, 3 vertices in list, example: [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
-
-* type="3D" for tetrahedrons, 4 vertices in list, example: [(0, 1, 2, 3),(0, 1, 2, 4)]
 
 Returns
 -------
@@ -1302,7 +1358,7 @@ Examples
 
 >>> triangles = [(0, 1, 2), (0, 2, 3)]
 
->>> v_p, g_edges, open_ports = ps.graph(triangles, type="2D")
+>>> v_p, g_edges, open_ports = ps.graph(triangles)
 
 >>> print("v_p: ", v_p)
 
@@ -1312,7 +1368,7 @@ Examples
 
 >>> tetrahedrons = [(0, 1, 2, 3),(0, 1, 2, 4)]
 
->>> v_p_3D, g_edges_3D, open_ports_3D = ps.graph(tetrahedrons, type="3D")
+>>> v_p_3D, g_edges_3D, open_ports_3D = ps.graph(tetrahedrons)
 
 >>> print("v_p_3D: ", v_p_3D)
 
