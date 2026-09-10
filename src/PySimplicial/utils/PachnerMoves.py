@@ -34,6 +34,8 @@ def move_2_2(tris):
     Pachner_move_2_2 Octahedron=[(0, 1, 2), (0, 2, 3), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 1, 4), (3, 0, 5), (0, 4, 5)]
     
     """
+    if not tris:
+        raise ValueError("tris must not be empty") 
     # we need to construct a mapping : edge -> list of tris containing it
     ett = defaultdict(list) # edge to tris
     for idx, (a,b,c) in enumerate(tris): # first triangle: (0, (0,1,2)) ; second triangle: (1, (0,2,3))
@@ -91,6 +93,8 @@ def move_1_3(tris):
     Basic octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
     Octahedron with move 3-1=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 6), (1, 4, 6), (5, 4, 6)]
     """
+    if not tris:
+        raise ValueError("tris must not be empty") 
     index = random.randrange(len(tris))
     a,b,c = tris[index]
     n_v = max(max(t) for t in tris) + 1 # +1 gives guaranteed unique ID
@@ -125,6 +129,8 @@ def move_3_1(tris):
     Basic octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
     Octahedron with move 3-1=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
     """
+    if not tris:
+        raise ValueError("tris must not be empty") 
     e_count = Counter()
     for (a,b,c) in tris:
         for edge in [tuple(sorted((a,b))), tuple(sorted((b,c))), tuple(sorted((a,c)))]:
@@ -183,6 +189,8 @@ def move_1_4(tetrahedron):
     same tetrahedron but with move 1-4=[(0, 1, 2, 4), (0, 1, 3, 4), (0, 2, 3, 4), (1, 2, 3, 4)]
     
     """
+    if not tetrahedron:
+        raise ValueError("tetrahedron must not be empty") 
     index = random.randrange(len(tetrahedron))
     a,b,c,d = tetrahedron[index]
     n_v = max(max(t) for t in tetrahedron) + 1 # +1 gives guaranteed unique ID
@@ -219,6 +227,8 @@ def move_4_1(tetrahedron):
     Pachner_move_1_4=[(0, 1, 2, 4), (0, 1, 3, 4), (0, 2, 3, 4), (1, 2, 3, 4)]
     Pachner_move_4_1=[(0, 1, 2, 3)]
     """
+    if not tetrahedron:
+        raise ValueError("tetrahedron must not be empty") 
     vert_tetrahedron = defaultdict(list)
     for i, (a,b,c,d) in enumerate(tetrahedron):
         for v in (a,b,c,d):
@@ -272,6 +282,8 @@ def move_2_3(tetrahedron):
     same tetrahedron but with move 2-3=[(0, 1, 3, 4), (1, 2, 3, 4), (0, 2, 3, 4)]
 
     """
+    if not tetrahedron:
+        raise ValueError("tetrahedron must not be empty") 
     # we need to construct a mapping : edge -> list of tris containing it
     ett = defaultdict(list) # edge to tris
     for idx, (a,b,c,d) in enumerate(tetrahedron):
@@ -330,6 +342,8 @@ def move_3_2(tetrahedron):
     same tetrahedron but with move 2-3=[(0, 1, 3, 4), (1, 2, 3, 4), (0, 2, 3, 4)]
     inverse, move 3-2=[(0, 1, 2, 3), (0, 1, 2, 4)]
     """
+    if not tetrahedron:
+        raise ValueError("tetrahedron must not be empty") 
     edge_to_tetrahedrons = defaultdict(list)
     for idx, tetrahedron_ in enumerate(tetrahedron):
         a,b,c,d = tetrahedron_

@@ -2,7 +2,7 @@ import opt_einsum
 import numpy as np
 
 
-def state_sum(C, b_inv, v_p, g_edges, open_ports=(), type="2D"): # pass values from graph() and C (c3) and b_inv
+def state_sum(C, b_inv, v_p, g_edges, open_ports=()): # pass values from graph() and C (c3) and b_inv
 
     """
     This function deserves a separate discussion:
@@ -11,9 +11,7 @@ def state_sum(C, b_inv, v_p, g_edges, open_ports=(), type="2D"): # pass values f
     
     More information can be found in https://github.com/kaifczxc-lab/OCSSN (the description of each parameter is quite complex and sometimes heavily depends on the context)
 
-    type == "2D" State-sum for triangles
-    
-    type == "3D" State-sum for tetrahedrons
+    The dimensionality is determined automatically based on the length of the tuple in v_p
 
     Returns
     -------
@@ -32,7 +30,7 @@ def state_sum(C, b_inv, v_p, g_edges, open_ports=(), type="2D"): # pass values f
     >>> print(before, after, np.isclose(before, after))
     4.0 4.0 True
     """
-    if type == "2D":
+    if len(v_p[0]) == 3:
         ops = [] # main list for opt_einsum, here we will add all arguments
         for (a,b,c) in v_p: # as example let take v_p = [(0,1,2),(3,4,5)]
             ops += [C, (a,b,c)] # for every unique port ID lets compare the index =>
@@ -42,7 +40,7 @@ def state_sum(C, b_inv, v_p, g_edges, open_ports=(), type="2D"): # pass values f
         ops += [tuple(open_ports)] # open_ports=[0,2,3,4]
         # After all: Z_T0 = sum_t1,t2,t3,t4,t5 C_t0,t1,t2 * C_t3,t4,t5 * (B^-1)_t1,t5
         return opt_einsum.contract(*ops, optimize="greedy") # opt_einsum its just better version of basic einsum, it searches the best way to sum huge values
-    elif type == "3D":
+    elif len(v_p[0]) == 4:
         # 3d is experimental because we have questions about the math part
         ops = []
         for (a,b,c,d) in v_p:
@@ -51,6 +49,8 @@ def state_sum(C, b_inv, v_p, g_edges, open_ports=(), type="2D"): # pass values f
             ops += [b_inv, (x,y,z)]
         ops += [tuple(open_ports)]
         return opt_einsum.contract(*ops, optimize="greedy")
+    if not v_p:
+        raise ValueError("v_p must not be empty")
 
 # Conceptually, this is a rather confusing function in the entire code (it transforms mesh geometry into a combinatorial for tensor network), so I will add a more extensive amount of explanation here, I tried to make it as clear as I could
 def graph(figure):

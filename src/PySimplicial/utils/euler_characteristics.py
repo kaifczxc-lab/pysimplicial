@@ -33,6 +33,8 @@ def compute_genus_2D(triangle_mesh2D):
     0
 
     """
+    if not triangle_mesh2D:
+        raise ValueError("triangle_mesh2d must not be empty")
     F = len(triangle_mesh2D) # In example of octahedron: F=8
     vert = set() # set() guarantees no duplicates
     for (a,b,c) in triangle_mesh2D: # calculate V
@@ -91,6 +93,8 @@ def compute_connected_components_3D(tetrahedron_mesh3D):
     1
     
     """
+    if not tetrahedron_mesh3D:
+        raise ValueError("tetrahedron_mesh3d must not be empty")
     T = len(tetrahedron_mesh3D)
     vert = set()
     for (a,b,c,d) in tetrahedron_mesh3D:

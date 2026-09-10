@@ -28,23 +28,23 @@ tris_2D_2_2 = PySimplicial.utils.move_2_2(tris)
 PySimplicial.utils.visualize_triangulation_2D(tris_2D_2_2)
 
 print("Visualization 5 : basic tetrahedron")
-PySimplicial.utils.visualize_triangulation_2D(one_tetrahedron, type="3D")
+PySimplicial.utils.visualize_triangulation_2D(one_tetrahedron)
 
 print("Visualization 6 : applied Pachner movement 2-3 on basic tetrahedron")
 tris_3D_2_3 = PySimplicial.utils.move_2_3(tetrahedron)
-PySimplicial.utils.visualize_triangulation_2D(tris_3D_2_3, type="3D")
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_2_3)
 
 print("Visualization 7 : applied Pachner movement 3-2 on tris_3D_2_3 (inverse, we should back to basic tetrahedron)")
 tris_3D_3_2 = PySimplicial.utils.move_3_2(tris_3D_2_3)
-PySimplicial.utils.visualize_triangulation_2D(tris_3D_3_2, type="3D")
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_3_2)
 
 print("Visualization 8 : applied Pachner movement 1-4 on basic tetrahedron")
 tris_3D_1_4 = PySimplicial.utils.move_1_4(one_tetrahedron)
-PySimplicial.utils.visualize_triangulation_2D(tris_3D_1_4, type="3D")
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_1_4)
 
 print("Visualization 9 : applied Pachner movement 4-1 on tris_3D_1_4 (inverse, we should back to basic tetrahedron)")
 tris_3D_4_1 = PySimplicial.utils.move_4_1(tris_3D_1_4)
-PySimplicial.utils.visualize_triangulation_2D(tris_3D_4_1, type="3D")
+PySimplicial.utils.visualize_triangulation_2D(tris_3D_4_1)
 
 # --------------
 
@@ -128,7 +128,12 @@ print(f"compute_genus_2D result is: {genus}")
 connected_components_3D = PySimplicial.utils.compute_connected_components_3D(tetrahedron)
 print(f"compute_connected_components_3D result is: {connected_components_3D}")
 
+# State sum
 # -------------------------------------------------
 
-
-
+print("state sum")
+C = np.array([[[1.,0.],[0.,1.]],[[0.,1.],[1.,0.]]])
+b_inv = np.array([[1.,0.],[0.,1.]])
+before = PySimplicial.utils.state_sum(C, b_inv, [(0,1,2),(3,4,5)], [(0,3),(1,4),(2,5)], ())
+after = PySimplicial.utils.state_sum(C, b_inv, [(0,1,2),(3,4,5)], [(0,4),(1,3),(2,5)], ())
+print(before, after, np.isclose(before, after))

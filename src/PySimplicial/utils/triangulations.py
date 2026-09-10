@@ -4,7 +4,7 @@ import mpl_toolkits
 import random
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-def visualize_triangulation_2D(figure, type="Triangles"): # 2D visualization
+def visualize_triangulation_2D(figure): # 2D visualization
     """
     This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
 
@@ -33,7 +33,7 @@ def visualize_triangulation_2D(figure, type="Triangles"): # 2D visualization
     The example can be found in official pysimplicial repository in Tutorials/showcase
 
     """
-    if type == "Triangles":
+    if len(figure[0]) == 3:
         G = networkx.Graph() # create empty graph
         for a,b,c in figure: # add edges from triangle
             G.add_edge(a,b)
@@ -44,7 +44,7 @@ def visualize_triangulation_2D(figure, type="Triangles"): # 2D visualization
         networkx.draw(G, pos, with_labels=True, node_color="lightblue", node_size=500, font_size=10)
         plt.axis("off")
         plt.show()
-    if type == "Tetrahedrons":
+    elif len(figure[0]) == 4:
         G = networkx.Graph() # create empty graph
         for a,b,c,d in figure: # add edges from triangle
             G.add_edge(a,b)
