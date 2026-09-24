@@ -30,27 +30,24 @@ def state_sum(C, b_inv, v_p, g_edges, open_ports=()): # pass values from graph()
     >>> print(before, after, np.isclose(before, after))
     4.0 4.0 True
     """
+    ops = []# main list for opt_einsum, here we will add all arguments
+    if not v_p:
+        raise ValueError("v_p must not be empty")
     if len(v_p[0]) == 3:
-        ops = [] # main list for opt_einsum, here we will add all arguments
         for (a,b,c) in v_p: # as example let take v_p = [(0,1,2),(3,4,5)]
             ops += [C, (a,b,c)] # for every unique port ID lets compare the index =>
             # => (t0,t1,t2,t3,t4,t5) => ops += [C, (0,1,2)] => C_t0,t1,t2 ; ops += [C,(3,4,5)] => C_t3,t4,t5 ; C_a,b,c for each triangle
-        for (x,y) in g_edges: # g_edges=[1,5]
-            ops += [b_inv, (x,y)] # b_inv = (B^-1)_t1,t5
-        ops += [tuple(open_ports)] # open_ports=[0,2,3,4]
-        # After all: Z_T0 = sum_t1,t2,t3,t4,t5 C_t0,t1,t2 * C_t3,t4,t5 * (B^-1)_t1,t5
-        return opt_einsum.contract(*ops, optimize="greedy") # opt_einsum its just better version of basic einsum, it searches the best way to sum huge values
     elif len(v_p[0]) == 4:
-        # 3d is experimental because we have questions about the math part
-        ops = []
         for (a,b,c,d) in v_p:
             ops += [C, (a,b,c,d)]
-        for (x,y,z) in g_edges:
-            ops += [b_inv, (x,y,z)]
-        ops += [tuple(open_ports)]
-        return opt_einsum.contract(*ops, optimize="greedy")
-    if not v_p:
-        raise ValueError("v_p must not be empty")
+    elif len(v_p[0]) > 4:
+        raise ValueError("Only 2d and 3d state sum is supported right now")
+    for (x,y) in g_edges:
+        ops += [b_inv, (x,y)] # fixed x,y,z to x,y
+    ops += [tuple(open_ports)]
+    # After all: Z_T0 = sum_t1,t2,t3,t4,t5 C_t0,t1,t2 * C_t3,t4,t5 * (B^-1)_t1,t5
+    return opt_einsum.contract(*ops, optimize="greedy")
+
 
 # Conceptually, this is a rather confusing function in the entire code (it transforms mesh geometry into a combinatorial for tensor network), so I will add a more extensive amount of explanation here, I tried to make it as clear as I could
 def graph(figure):
@@ -122,10 +119,12 @@ def graph(figure):
             e_slots.setdefault(eac,[]).append(s2) 
         g_edges, open_ports = [], []
         for s in e_slots.values():
-            if len(s) == 2: # 2 ports of different triangles
+            if len(s) == 1:
+                open_ports.append(s[0])
+            elif len(s) == 2: # 2 ports of different triangles
                 g_edges.append((s[0], s[1]))
-            else: # if we have more or less than 2 ports
-                open_ports += s # we just send it into free lists
+            else:
+                raise ValueError("ValueError: if len(s) > 2 - its non-manifold simplex, face share more than two faces")
         return v_p, g_edges, open_ports
     elif len(figure[0]) == 4:
         v_p = []
@@ -143,10 +142,12 @@ def graph(figure):
             e_slots.setdefault(ebcd, []).append(s3)
         g_edges, open_ports = [], []
         for s in e_slots.values():
-            if len(s) == 2:
+            if len(s) == 1:
+                open_ports.append(s[0])
+            elif len(s) == 2: # 2 ports of different triangles
                 g_edges.append((s[0], s[1]))
             else:
-                open_ports += s 
+                raise ValueError("ValueError: if len(s) > 2 - its non-manifold simplex, face share more than two faces")
         return v_p, g_edges, open_ports
     else:
         raise ValueError("Unsupported simplex dimension")

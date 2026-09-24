@@ -1,11 +1,11 @@
 import PySimplicial.utils
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 octahedron = [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
 tetrahedron = [(0, 1, 2, 3),(0, 1, 2, 4)]
 one_tetrahedron = [(0, 1, 2, 3)]
-
 
 
 # Visualize part
@@ -82,51 +82,40 @@ plt.show()
 # --------------
 
 octahedron_for_relabel = [(10, 50, 15),(10, 15, 25),(10, 25, 40),(10, 40, 50),(90, 15, 50),(90, 25, 15),(90, 40, 25),(90, 50, 40)]
-relabel = PySimplicial.utils.relabel(octahedron_for_relabel)
-print("RELABEL")
-print(relabel)
-
-converter_GNN_2D = PySimplicial.utils.converter_for_gnn(relabel)
-print("CONVERTER GNN")
-print(converter_GNN_2D)
-
-converter_TNN_2D = PySimplicial.utils.converter_for_tnn(relabel, 6)
-print("CONVERTER TNN")
-print(converter_TNN_2D)
-
-converter_MLP_2D = PySimplicial.utils.converter_for_mlp(relabel, return_g=True)
-print("CONVERTED MLP")
-print(converter_MLP_2D)
-
 tetrahedron_for_relabel = [(100, 8282, 327, 21828),(0,8282, 327, 21828),(0,100, 327, 21828),(0,100, 8282, 21828),(0,100, 8282, 327)]
-relabel_3D = PySimplicial.utils.relabel_3D(tetrahedron_for_relabel)
-print("RELABEL 3D")
-print(relabel_3D)
 
-converter_GNN_3D = PySimplicial.utils.converter_for_gnn_3D(relabel_3D)
-print("CONVERTER GNN 3D")
-print(converter_GNN_3D)
+converter = PySimplicial.utils.Converters()
 
-converter_TNN_3D = PySimplicial.utils.converter_for_tnn_3D(relabel_3D, 6)
-print("CONVERTER TNN 3D")
-print(converter_TNN_3D)
+relabeled = converter.relabel(octahedron_for_relabel)
 
-converter_MLP_3D = PySimplicial.utils.converter_for_mlp_3D(relabel_3D, return_x=True)
-print("CONVERTED MLP 3D")
-print(converter_MLP_3D)
+A, L = converter.to_gnn(relabeled)
+print(f"(a,b,c): A={A}, L={L}")
 
+A_norm = converter.to_tnn(relabeled, N=6)
+print(f"(a,b,c): A_norm={A_norm}")
 
+features = converter.to_mlp(relabeled, return_chi=True)
+print(f"(a,b,c): features={features}")
 
+relabeled_ = converter.relabel(tetrahedron_for_relabel)
+
+A_, L_ = converter.to_gnn(relabeled_)
+print(f"(a,b,c,d): A_={A_}, L_={L}")
+
+A_norm_ = converter.to_tnn(relabeled_, N=5)
+print(f"(a,b,c,d): A_norm_={A_norm_}")
+
+features_ = converter.to_mlp(relabeled_)
+print(f"(a,b,c,d): features_={features_}")
 # --------------
 
-# Computing genus and connected components functions
 # -------------------------------------------------
 
-genus = PySimplicial.utils.compute_genus_2D(octahedron)
-print(f"compute_genus_2D result is: {genus}")
+octahedron = [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
+print(f"Euler characteristics for mesh in form of (a,b,c) = {PySimplicial.utils.euler_characteristics(octahedron)}")
 
-connected_components_3D = PySimplicial.utils.compute_connected_components_3D(tetrahedron)
-print(f"compute_connected_components_3D result is: {connected_components_3D}")
+tetrahedron = [(0, 1, 2, 3),(0, 1, 2, 4)]
+print(f"Euler characteristics for mesh in form of (a,b,c) = {PySimplicial.utils.euler_characteristics(tetrahedron)}")
 
 # State sum
 # -------------------------------------------------

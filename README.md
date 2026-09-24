@@ -21,10 +21,13 @@ pip install git+https://github.com/kaifczxc-lab/pysimplicial.git
 ```python
 
 import PySimplicial.utils
+from PySimplicial.utils import Converters
+
+conv = Converters()
 
 octahedron_ = [(10, 50, 15),(10, 15, 25),(10, 25, 40),(10, 40, 50),(90, 15, 50),(90, 25, 15),(90, 40, 25),(90, 50, 40)]
 
-octahedron_relabeled = PySimplicial.utils.relabel(octahedron_)
+octahedron_relabeled = conv.relabel(octahedron_)
 
 print("Let's visualize the octahedron!")
 PySimplicial.utils.visualize_triangulation_2D(octahedron_relabeled)
@@ -38,14 +41,15 @@ octahedron_return = PySimplicial.utils.move_3_1(octahedron_modify)
 PySimplicial.utils.visualize_triangulation_2D(octahedron_return)
 
 print("Let's calculate genus of this octahedron!")
-Compute_genus = PySimplicial.utils.compute_genus_2D(octahedron_return)
+Compute_genus = PySimplicial.utils.euler_characteristics(octahedron_return)
 print(f"genus={Compute_genus}")
 """
 genus=0
 """
 
 print("Let's convert this figure to into the feature vector for MLP!")
-Converter = PySimplicial.utils.converter_for_mlp(octahedron_return, return_g=True) # return F, V, E, g, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv ; 
+
+Converter = conv.to_mlp(octahedron_return, return_chi=True) # return F, V, E, g, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv ; 
 # Where V = unique vertices, E = unique edges, F = number of faces, g = surface genus ; bins is Histogram of vertex degrees ; avg_degree is "2 * unique edges / unique vertices" ; tpv is "Number of faces / unique vertices"
 print(f"result={Converter}")
 """

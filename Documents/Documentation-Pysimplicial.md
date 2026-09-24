@@ -8,11 +8,11 @@ The current version of the library (0.1.2) has the following set of functions:
 
 * [Pachner Moves](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#pachner-moves): [move_2_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_2tris), [move_1_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_3tris), [move_3_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_1tris), [move_1_4](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_1_4tetrahedron), [move_2_3](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_2_3tetrahedron), [move_4_1](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_4_1tetrahedron), [move_3_2](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#move_3_2tetrahedrons)
 
-* [Data Converters for ML](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converters): [chain_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#chain_2dbase-label-k-p_13035-p_22055-p_31010-return_statstrue), [chain_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#chain_3dbase-label-k-p_14--025-p_41015-p_32040-p_23020-return_statstrue), [converter_for_gnn](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_gnntris), [converter_for_gnn_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_gnn_3dtetrahedron), [converter_for_mlp](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_mlptris-return_gfalse), [converter_for_mlp_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_mlp_3dtetrahedron-return_xfalse), [converter_for_tnn](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_tnntris-n), [converter_for_tnn_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converter_for_tnn_3dtetrahedron-n), [relabel](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#relabeltris), [relabel_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#relabel_3dtetrahedron)
+* [Data Converters for ML](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#converters): Converters
 
 * [Generators](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#generators): [combinatorial_torus](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#combinatorial_torusm-n), [combinatorial_torus_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#combinatorial_torus_3dm-n-p), [geometry_bottle_of_klein](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#geometry_bottle_of_kleinu-v),[geometry_torus](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#geometry_torusmnrr)
 
-* [Tools for computing euler's characteristics](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#tools-for-computing-eulers-characteristics): [compute_connected_components_3D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#compute_connected_components_3dtetrahedron_mesh3d), [compute_genus_2D](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#compute_genus_2dtriangle_mesh2d)
+* [Euler Characteristics computing tool](): [euler_characteristics]()
 
 * [Experimental tools](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#experimental-tools): [state_sum](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#state_sumc-b_inv-v_p-g_edges-open_ports-type2d), [graph](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Documents/Documentation-Pysimplicial.md#graphfigure-type2d--3d)
 
@@ -480,26 +480,29 @@ Some experiments were conducted on synthetic data, and the results do not yet cl
 
 Tests:
 
-1. [Tests\Converters_test](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Tests/converters_test.py)
+1. [experiments\Converters_test](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/experiments/converters_test.py)
 
-2. [Tests\Converters_experiments](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Tests/converters_experiments.py)
+2. [experiments\Converters_experiments](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/experiments/converters_experiments.py)
 
 3. [chain_test](https://github.com/kaifczxc-lab/pysimplicial/blob/SiritoriProjects/Tests/chain_test.py)
+
+4. Tests\converter_mini_test
 
 ---
 
 <div align="center">
-  <h2>relabel(tris)</h2>
+  <h2>relabel(self, simplices)</h2>
 </div>
+
 
 Renumber vertices of a triangle mesh to consecutive integers starting from 0
 
 Parameters
 ----------
 
-tris: list
-* Triangle mesh list
-    
+figure: list of tuple
+* list of tuple with form of (a,b,c) or (a,b,c,d) ; anything else right now unsupported
+        
 Returns
 -------
 
@@ -510,38 +513,36 @@ Examples
 --------
 
 >>> octahedron_ = [(0,10,20), (0,20,30), (0,30,40), (0,40,10),(50,20,10), (50,30,20), (50,40,30), (50,10,40)]
-
 >>> octahedron_relabeled = PySimplicial.utils.relabel(octahedron_)
-
 >>> print(f"Octahedron={octahedron_relabeled}")
-
 Octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
 
 ---
 
 <div align="center">
-  <h2>converter_for_gnn(tris)</h2>
+  <h2>to_gnn(self, simplices)</h2>
 </div>
 
 Here we calculate the matrix from all vertices of tris-mesh, sum it and return:
 
 Parameters
 ----------
-    
-tris: list
-* Triangle mesh list
+
+figure: list of tuple
+* list in form of (a,b,c) or (a,b,c,d) ; anything else are unsupported right now
 
 Returns
 -------
 
-A / (s + 1e-8): torch.Tensor
+torch.Tensor:
 * Normalized adjacency matrix of shape
 
+* A / (s + 1e-8)
 
-L: torch.Tensor
+torch.Tensor:
 * Node feature matrix of shape
 
-
+* L
 
 Notes
 -----
@@ -549,7 +550,7 @@ Notes
 * num_nodes = max(max(t) for t in tris)
 
 * A = torch.zeros((num_nodes, num_nodes))
-    
+        
 * L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1
 
 * s = A.sum()
@@ -557,33 +558,44 @@ Notes
 Examples
 --------
 
->>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
-
->>> converter_GNN_2D = PySimplicial.utils.converter_for_gnn(relabel_)
-
+>>> relabel = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+>>> converter_GNN_2D = PySimplicial.utils.converter_for_gnn(relabel)
 >>> print("CONVERTER GNN")
-
->>> print(converter_GNN_2D)
-
-
+>>> print(converter_GNN)
 CONVERTER GNN
-
 (tensor([[0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000],
-[0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
-[0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
-[0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
-[0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
-[0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000]]), tensor([[0.1667, 1.0000],
-[0.1667, 1.0000],
-[0.1667, 1.0000],
-[0.1667, 1.0000],
-[0.1667, 1.0000],
-[0.1667, 1.0000]]))
+  [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
+  [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
+  [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
+  [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
+  [0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000]]), tensor([[0.1667, 1.0000],
+  [0.1667, 1.0000],
+  [0.1667, 1.0000],
+  [0.1667, 1.0000],
+  [0.1667, 1.0000],
+  [0.1667, 1.0000]]))
+
+---
+
+>>> relabel = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+>>> converter_gnn = PySimplicial.utils.converter_for_gnn(relabel)
+>>> print("CONVERTER GNN")
+>>> print(converter_gnn)
+CONVERTER GNN
+(tensor([[0.0000, 0.0500, 0.0500, 0.0500, 0.0500],
+  [0.0500, 0.0000, 0.0500, 0.0500, 0.0500],
+  [0.0500, 0.0500, 0.0000, 0.0500, 0.0500],
+  [0.0500, 0.0500, 0.0500, 0.0000, 0.0500],
+  [0.0500, 0.0500, 0.0500, 0.0500, 0.0000]]), tensor([[0.2000, 1.0000],
+  [0.2000, 1.0000],
+  [0.2000, 1.0000],
+  [0.2000, 1.0000],
+  [0.2000, 1.0000]]))
 
 ---
 
 <div align="center">
-  <h2>converter_for_tnn(tris, N)</h2>
+  <h2>to_tnn(self, simplices, N)</h2>
 </div>
 
 Here we calculate the symmetric normalized adjacency matrix from tris-mesh data
@@ -591,47 +603,51 @@ Here we calculate the symmetric normalized adjacency matrix from tris-mesh data
 Parameters
 ----------
 
-tris: list
-
-* Triangle mesh list
-
+figure: list of tuple
+* list in form of (a,b,c) or (a,b,c,d) ; anything else are unsupported right now
+        
 N: int
-
 * torch.zeros matrix N x N
 
 Returns
 -------
 
-A_norm: torch.Tensor
-
+torch.Tensor:
 * Normalized adjacency matrix of shape 
 
 Examples
 --------
 
 >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
-
->>> converter_TNN_2D = PySimplicial.utils.converter_for_tnn(relabel_, 6)
-
+>>> converter_TNN = PySimplicial.utils.converter_for_tnn(relabel_, 6)
 >>> print("CONVERTER TNN")
-
->>> print(converter_TNN_2D)
-
+>>> print(converter_TNN)
 CONVERTER TNN
-
 tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
-[0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
-[0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
-[0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
-[0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
-[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000]])
+    [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+    [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+    [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+    [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+    [0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000]])
+---
+
+>>> relabel = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+>>> converter_TNN = PySimplicial.utils.converter_for_tnn(relabel, 6)
+>>> print("CONVERTER TNN")
+>>> print(converter_TNN)
+CONVERTER TNN
+tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
+[0.2500, 0.0000, 0.2500, 0.2500, 0.2500, 0.0000],
+[0.2500, 0.2500, 0.0000, 0.2500, 0.2500, 0.0000],
+[0.2500, 0.2500, 0.2500, 0.0000, 0.2500, 0.0000],
+[0.2500, 0.2500, 0.2500, 0.2500, 0.0000, 0.0000],
+[0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000]])
 
 ---
 
 <div align="center">
-  <h2>converter_for_mlp(tris, return_g=False)</h2>
+  <h2>to_mlp(self, simplices, return_chi=True)</h2>
 </div>
-
 
 Here we calculate the Histogram of vertex degrees, euler's characteristics, tris_per_vertex (F / V) and average deegree number
 
@@ -640,13 +656,13 @@ Histogram of verted degrees algorithm:
 >>> get the degree count for every node in tris
 
 >>> count how many nodes share each degree value
-    
+
 Euler's Charactertic formula (2D):
 
 >>> V = unique vertices, E = unique edges, F = number of faces, g = surface genus
 
 >>> x = V - E + F = 2 - 2g
-    
+
 Calculating tris_per_vertex:
 
 >>> Number of faces / unique vertices
@@ -658,16 +674,16 @@ Calculating average degree:
 Parameters
 ----------
 
-tris: list of tuple
+figure: list of tuple
 
-* Triangle mesh list
+* list in form of (a,b,c) or (a,b,c,d) ; anything else are unsupported right now
 
-return_g: boolean
+return_chi: boolean
 
 Returns
 ------
 
-if return_g=True => return F, V, E, g, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+if return_chi=True => return F, V, E, chi, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
 
 else: return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
 
@@ -675,218 +691,22 @@ Examples
 --------
 
 >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
-
->>> converter_MLP_2D = PySimplicial.utils.converter_for_mlp(relabel_, return_g=True)
-
+>>> converter_MLP = PySimplicial.utils.converter_for_mlp(relabel_, return_chi=True)
 >>> print("CONVERTED MLP")
-
->>> print(converter_MLP_2D)
-
+>>> print(converter_MLP)
 CONVERTED MLP
-
 (8, 6, 12, 0, 0, 6, 0, 0, 4.0, 1.3333333333333333)
-  
----
 
-<div align="center">
-  <h2>relabel_3D(tetrahedron)</h2>
-</div>
 
-
-Renumber vertices of a tetrahedrons mesh to consecutive integers starting from 0
-
-Parameters
-----------
-
-tetrahedron: list
-
-* Tetrahedrons mesh list
-
-Returns
--------
-
-n_tetrahedrons: list of tuple
-* Renumbered tetrahedrons mesh list
-
-Examples
---------
-
->>> tetrahedron_for_relabel = [(100,200,300,400),(0,200,300,400),(0,100,300,400),(0,100,200,400),(0,100,200,300)]
-
->>> relabel_3D_ = PySimplicial.utils.relabel_3D(tetrahedron_for_relabel)
-
->>> print("RELABEL 3D")
-
->>> print(relabel_3D_)
-
-RELABEL 3D
-
-[(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-
----
-
-<div align="center">
-  <h2>converter_for_gnn_3D(tetrahedron)</h2>
-</div>
-
-
-Here we calculate the matrix from all vertices of tetrahedron-mesh, sum it and return:
-
-Parameters
-----------
-    
-tetrahedron: list
-* tetrahedron mesh list
-
-Returns
--------
-
-A / (s + 1e-8): torch.Tensor
-* Normalized adjacency matrix of shape
-
-L: torch.Tensor
-* Node feature matrix of shape
-
-Notes
------
-
-* num_nodes = max(max(t) for t in tetrahedron)
-
-* A = torch.zeros((num_nodes, num_nodes))
-    
-* L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1
-
-* s = A.sum()
-
-Examples
---------
-
->>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-
->>> converter_GNN_3D = PySimplicial.utils.converter_for_gnn_3D(relabel_3D_)
-
->>> print("CONVERTER GNN 3D")
-
->>> print(converter_GNN_3D)
-
-CONVERTER GNN 3D
-
-
-(tensor([[0.0000, 0.0500, 0.0500, 0.0500, 0.0500],
-[0.0500, 0.0000, 0.0500, 0.0500, 0.0500],
-[0.0500, 0.0500, 0.0000, 0.0500, 0.0500],
-[0.0500, 0.0500, 0.0500, 0.0000, 0.0500],
-[0.0500, 0.0500, 0.0500, 0.0500, 0.0000]]), tensor([[0.2000, 1.0000],
-[0.2000, 1.0000],
-[0.2000, 1.0000],
-[0.2000, 1.0000],
-[0.2000, 1.0000]]))
-
----
-
-<div align="center">
-  <h2>converter_for_tnn_3D(tetrahedron, N)</h2>
-</div>
-
-Here we calculate the symmetric normalized adjacency matrix from tetrahedron-mesh data
-
-Parameters
-----------
-
-tetrahedron: list of tuple
-
-* Tetrahedrons mesh list
-    
-N: int
-
-* torch.zeros matrix N x N
-
-Returns
--------
-
-A_norm: torch.Tensor
-
-* Normalized adjacency matrix of shape 
-
-Examples
---------
->>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-
->>> converter_TNN_3D = PySimplicial.utils.converter_for_tnn_3D(relabel_3D_, 6)
-
->>> print("CONVERTER TNN 3D")
-
->>> print(converter_TNN_3D)
-
-CONVERTER TNN 3D
-
-tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
-[0.2500, 0.0000, 0.2500, 0.2500, 0.2500, 0.0000],
-[0.2500, 0.2500, 0.0000, 0.2500, 0.2500, 0.0000],
-[0.2500, 0.2500, 0.2500, 0.0000, 0.2500, 0.0000],
-[0.2500, 0.2500, 0.2500, 0.2500, 0.0000, 0.0000],
-[0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000]])
-
----
-
-<div align="center">
-  <h2>converter_for_mlp_3D(tetrahedron, return_x=False)</h2>
-</div>
-
-
-Here we calculate the Histogram of vertex degrees, euler's characteristics, tetrahedron_per_vertex (F / V) and average deegree number
-
-Histogram of verted degrees algorithm: 
-
->>> get the degree count for every node in tetrahedron
-
->>> count how many nodes share each degree value
-    
-Euler's Charactertic formula (2D):
-
->>> V = unique vertices, E = unique edges, F = number of faces, g = surface genus
-
->>> x = V - E + F = 2 - 2g
-
-Calculating tetrahedron_per_vertex:
-
->>> Number of faces / unique vertices
-
-Calculating average degree:
-
->>> 2 * unique edges / unique vertices
-
-Parameters
-----------
-
-tetrahedron: list of tuple
-
-* Tetrahedrons mesh list
-
-return_x: boolean
-
-Returns
--------
-
-if return_x true => return F, V, E, x, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-
-else: return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-
-Examples
---------
->>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-
->>> converter_MLP_3D = PySimplicial.utils.converter_for_mlp_3D(relabel_3D_, return_x=True)
-
->>> print("CONVERTED MLP 3D")
-
->>> print(converter_MLP_3D)
-
-CONVERTED MLP 3D
-
+>>> relabel = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+>>> converter_MLP = PySimplicial.utils.converter_for_mlp(relabel, return_chi=True)
+>>> print("CONVERTED MLP")
+>>> print(converter_MLP)
+CONVERTED MLP
 (10, 5, 10, 0, 0, 5, 0, 0, 4.0, 2.0)
-
 ---
+
+
 
 <div align="center">
   <h2>chain_2D(base, label, K, p_13=0.35, p_22=0.55, p_31=0.10, return_stats=True)</h2>
@@ -1184,10 +1004,10 @@ Examples
 ---
 
 <div align="center">
-  <h1>Tools for computing euler's characteristics</h1>
+  <h1>Euler Characteristics computing tool</h1>
 </div>
 
-These tools are important for checking the correctness of the figure, used in chain_2D/chain_3D. In theory, a useful tool
+Now, in library we have only one tool
 
 Tests:
 
@@ -1195,52 +1015,25 @@ Tests:
 
 * utils\converters
 
-<div align="center">
-  <h2>compute_genus_2D(triangle_mesh2D)</h2>
-</div>
-
-
-Calculates the type of surface in 2D mesh and depends of number says how much there holes
-
-The Euler's Characteristics has invented by Leonard Euler and looks like that x = V - E + F = 2 - 2g, so, we can find g if we change this formula (Assumes the mesh is a closed orientable surface)
-
-Vertices and edges are counted uniquely
-
-Parameters
-----------
-triangle_mesh2D: list of tuple
-
-* Enter triangulation in form list of triangles
-
-* Every triangle is a tuple of three integers (vertex indices)
-    
-Returns
--------
-
-g: int
-
-* Natural number that says the genus of the surface
-
-Examples
---------
-
->>> octahedron = [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
-
->>> print(compute_genus_2D(octahedron))
-
-0
+* Tests\Genus-invariance-under-Pachner-moves
 
 ---
 
 <div align="center">
-  <h2>compute_connected_components_3D(tetrahedron_mesh3D)</h2>
+  <h2>euler_characteristics</h2>
 </div>
 
-Calculates the number of connected components of a 3D space
-    
-Formula: χ = V - E + F - T
 
-Where:
+Calculates the Euler's characteristics for mesh in form of (a,b,c) and mesh in form of (a,b,c,d)
+
+(a,b,c): The Euler's Characteristics has invented by Leonard Euler and looks like that x = V - E + F = 2 - 2g, so, we can find g if we change this formula (Assumes the mesh is a closed orientable surface)
+
+(a,b,c,d): Formula: χ = V - E + F - T
+
+Note
+----
+
+* Vertices and edges are counted uniquely
 
 * V is unique vertices
 
@@ -1252,30 +1045,35 @@ Where:
 
 Parameters
 ----------
+mesh: list of tuple
 
-tetrahedron_mesh3D : list of tuple
-
-* Enter triangulation in form list of tetrahedrons
-
-* Every tetrahedron is a tuple of four integers (vertex indices)
-
+* Enter triangulation list
+    
 Returns
 -------
 
-x: int
-
-* Natural number that says amount of connected components of a 3D space
+g / x: int
     
+* Natural number that says the genus of the surface
+
+2D - g. Formula "g = (2 - (V-E+F)) // 2"
+
+3D - x. Formula "χ = V - E + F - T"
+
 Examples
 --------
 
+>>> octahedron = [(0,1,2), (0,2,3), (0,3,4), (0,4,1),(5,2,1), (5,3,2), (5,4,3), (5,1,4)]
+>>> print(euler_characteristics(octahedron))
+0
 >>> tetrahedron = [(0, 1, 2, 3),(0, 1, 2, 4)]
-
->>> print(compute_genus_3D(tetrahedra))
-
+>>> print(euler_characteristics(tetrahedra))
 1
 
+
+
 ---
+
 
 <div align="center">
   <h1>Experimental tools</h1>
@@ -1389,3 +1187,32 @@ g_edges_3D:  [(0, 4)]
 open_ports_3D:  [1, 2, 3, 5, 6, 7]
 
 ---
+
+<div align="center">
+  <h1>Changelog</h1>
+</div>
+
+
+Here author will write all about changes in updates
+
+<div align="center">
+  <h2>Version 1.3</h2>
+</div>
+
+* State-sum has optimized and fixed one bug, the graph() function return a g_edges with 2 ports for (a,b,c) and (a,b,c,d) list of tuples, but in 3D state-sum was ```for (x,y,z) in g_edges```
+
+* Fixed bug: in converter_for_gnn fixed `A[u,w]=1.0` to `A[u,w]=A[w,u]=1.0`
+
+* Merged `compute_connected_components_3D` and `compute_genus` into a single function. Also, the name `compute_connected_components_3D` is a bit of a misnomer—it would be better to name it more generally, such as `eulers_characteristics`
+
+* In PachnerMoves in move_3_1 added e_count check: `if e_count[tuple(sorted((u,v)))] != 2: ; break`
+
+* Optimized Converters, merged 2d and 3d functions in one general class
+
+* The documentation was rewritten
+
+* Added new ```converters_test``` and rewritten the ```Genus-invariance-under-Pachner-moves```
+
+
+
+

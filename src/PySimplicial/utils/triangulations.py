@@ -183,13 +183,12 @@ def visualize_triangulation_3D(figure, fs1=8, fs2=6, xlim=-1, ylim=-1, zlim = -1
                 if len(coord) != 3:
                     raise ValueError(f"vertex {v} has {len(coord)} coordinates, expected 3")
         for a,b,c,d in figure:
-
             coords.append([pos[a], pos[b], pos[c]])
             coords.append([pos[a], pos[b], pos[d]])
             coords.append([pos[a], pos[c], pos[d]])
             coords.append([pos[b], pos[c], pos[d]]) 
-        else:
-            raise ValueError("Unsupported simplex dimension")
+    else:
+        raise ValueError("Unsupported simplex dimension")
     if enable_random_face_colors:
         face_colors = [[random.random() for _ in range(3)] for _ in coords]
         pol = Poly3DCollection(coords, facecolors=face_colors)
@@ -207,43 +206,3 @@ def visualize_triangulation_3D(figure, fs1=8, fs2=6, xlim=-1, ylim=-1, zlim = -1
         plt.show()
     return fig, ax
         
-"""def visualize_triangulation_3D(tetrahedron): # 3D visualization
-
-    This function works on top of networkx.Graph() and networkx.spring_layout, it takes vertices, connects them and renders them based on the given shape
-
-    Does not implement 3D visualization, the function simply accepts a tetrahedron with 4 vertices instead of a triangle with 3 vertices.
-
-    We take a tetrahedron, a list of the form (a,b,c,d) and distribute each of its vertices, then through spring_layout we build a dict and then visualize it through draw
-    
-    Parameters
-    ----------
-
-    tetrahedron: list of tuple
-        Tetrahedrons mesh list
-
-    Returns
-    -------
-
-    Visualized figure with using matplotlib
-    
-    Examples
-    --------
-
-    The example can be found in official pysimplicial repository in Tutorials/showcase
-
-    G = networkx.Graph() # create empty graph
-    for a,b,c,d in tetrahedron: # add edges from triangle
-        G.add_edge(a,b)
-        G.add_edge(a,c)
-        G.add_edge(a,d)
-        G.add_edge(b,c)
-        G.add_edge(b,d)
-        G.add_edge(c,d)
-    pos = networkx.spring_layout(G, seed=1) # define vertices position
-    plt.figure(figsize=(5,5))
-    networkx.draw(G, pos, with_labels=True, node_color="lightblue", node_size=500, font_size=10)
-    plt.axis("off")
-    plt.tight_layout()
-    plt.show()"""
-
-# TODO: I need to make the same visualization, but in 3D space, but I don't know exactly how to do it yet ; Add function checks that the triangulation is a closed two-dimensional surface

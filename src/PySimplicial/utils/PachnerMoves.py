@@ -150,15 +150,19 @@ def move_3_1(tris):
                     others.append(u)
         if len(others) != 3:
             continue
-        o1,o2,o3 = others
-        new_tri = (o1,o2,o3)
-        existing_edges = set(tuple(sorted((a,b))) for a,b,c in tris
-                            for a,b in [(a,b), (b,c), (a,c)])
-        if tuple(sorted((o1, o2))) in existing_edges and tuple(sorted((o2, o3))) in existing_edges and tuple(sorted((o1, o3))) in existing_edges:
-            pass
-        new_triangles = [t for i, t in enumerate(tris) if i not in incident]
-        new_triangles.append(new_tri)
-        return new_triangles
+        for u in others:
+            if e_count[tuple(sorted((u,v)))] != 2: # added e_count check
+                break
+        else:
+            o1,o2,o3 = others
+            new_tri = (o1,o2,o3)
+            existing_edges = set(tuple(sorted((a,b))) for a,b,c in tris
+                                for a,b in [(a,b), (b,c), (a,c)])
+            if tuple(sorted((o1, o2))) in existing_edges and tuple(sorted((o2, o3))) in existing_edges and tuple(sorted((o1, o3))) in existing_edges:
+                pass
+            new_triangles = [t for i, t in enumerate(tris) if i not in incident]
+            new_triangles.append(new_tri)
+            return new_triangles
     return None
 
 def move_1_4(tetrahedron):
@@ -310,7 +314,7 @@ def move_2_3(tetrahedron):
 
 def move_3_2(tetrahedron):
     """
-    This function implements Pachner Move type 3-1
+    This function implements Pachner Move type 3-2
     
     The 3-2 move is the inverse of the 2-3 move, replacing three tetrahedra meeting on an internal edge between two tetrahedra sharing a face, reducing the number of tetrahedra by one, and removing one edge without changing vertices
     

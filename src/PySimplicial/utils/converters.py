@@ -7,475 +7,353 @@ from collections import Counter
 import random
 import PySimplicial.utils as ps
 
-def relabel(tris):
-    """
-    Renumber vertices of a triangle mesh to consecutive integers starting from 0
+class Converters:
+    def relabel(self, simplices):
+        """
+        Renumber vertices of a triangle mesh to consecutive integers starting from 0
 
-    Parameters
-    ----------
+        Parameters
+        ----------
 
-    tris: list
-        Triangle mesh list
-    
-    Returns
-    -------
-
-    list of tuple:
-        Renumbered triangle mesh list
-
-    Examples
-    --------
-
-    >>> octahedron_ = [(0,10,20), (0,20,30), (0,30,40), (0,40,10),(50,20,10), (50,30,20), (50,40,30), (50,10,40)]
-    >>> octahedron_relabeled = PySimplicial.utils.relabel(octahedron_)
-    >>> print(f"Octahedron={octahedron_relabeled}")
-    Octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
-    """
-
-    map = {}
-    n_tris = []
-    for a,b,c in tris:
-        for v in (a,b,c):
-            if v not in map:
-                map[v] = len(map)
-        n_tris.append((map[a], map[b], map[c]))
-    return n_tris
-
-def converter_for_gnn(tris):
-    """
-    Here we calculate the matrix from all vertices of tris-mesh, sum it and return:
-
-    Parameters
-    ----------
-    
-    tris: list
-        Triangle mesh list
-
-    Returns
-    -------
-
-    torch.Tensor:
-        Normalized adjacency matrix of shape
+        figure: list of tuple
+            list of tuple with form of (a,b,c) or (a,b,c,d) ; anything else right now unsupported
         
-        A / (s + 1e-8)
+        Returns
+        -------
 
-    torch.Tensor:
-        Node feature matrix of shape
+        list of tuple:
+            Renumbered triangle mesh list
 
-        L
+        Examples
+        --------
 
-    Notes
-    -----
+        >>> octahedron_ = [(0,10,20), (0,20,30), (0,30,40), (0,40,10),(50,20,10), (50,30,20), (50,40,30), (50,10,40)]
+        >>> octahedron_relabeled = PySimplicial.utils.relabel(octahedron_)
+        >>> print(f"Octahedron={octahedron_relabeled}")
+        Octahedron=[(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
 
-    num_nodes = max(max(t) for t in tris)
-
-    A = torch.zeros((num_nodes, num_nodes))
-    
-    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1
-    s = A.sum()
-
-    Examples
-    --------
-
-    >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
-    >>> converter_GNN_2D = PySimplicial.utils.converter_for_gnn(relabel_)
-    >>> print("CONVERTER GNN")
-    >>> print(converter_GNN_2D)
-    CONVERTER GNN
-    (tensor([[0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000],
-        [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
-        [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
-        [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
-        [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
-        [0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000]]), tensor([[0.1667, 1.0000],
-        [0.1667, 1.0000],
-        [0.1667, 1.0000],
-        [0.1667, 1.0000],
-        [0.1667, 1.0000],
-        [0.1667, 1.0000]]))
-
-    """
-    tris = relabel(tris) # we make it so that the difference between the vertices in the list is not so big (let's say like [1,49])
-    num_nodes = max(max(t) for t in tris) + 1 
-    A = torch.zeros((num_nodes, num_nodes))
-    for (u,v,w) in tris:
-        A[u,v]=A[v,u]=1.0; A[v,w]=A[w,v]=1.0; A[u,w]=1.0
-    s = A.sum()
-    degree = (A.sum(dim=1, keepdim=True) / (s + 1e-8))
-    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1)
-    return A / (s + 1e-8), L
-
-def converter_for_tnn(tris, N):
-    """
-    Here we calculate the symmetric normalized adjacency matrix from tris-mesh data
-
-    Parameters
-    ----------
-
-    tris: list
-        Triangle mesh list
-    
-    N: int
-        torch.zeros matrix N x N
-
-    Returns
-    -------
-
-    torch.Tensor:
-        Normalized adjacency matrix of shape 
-
-    Examples
-    --------
-
-    >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
-    >>> converter_TNN_2D = PySimplicial.utils.converter_for_tnn(relabel_, 6)
-    >>> print("CONVERTER TNN")
-    >>> print(converter_TNN_2D)
-    CONVERTER TNN
-    tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
-        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
-        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
-        [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
-        [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
-        [0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000]])
-
-    """
-    tris = relabel(tris)
-    A = torch.zeros((N,N))
-    for (u,v,w) in tris:
-        A[u,v]=A[v,u]=1.0; A[v,w]=A[w,v]=1.0; A[u,w]=A[w,u]=1.0
-    deg = A.sum(dim=1)
-    deg1 = torch.where(deg > 0, deg.pow(-0.5), torch.zeros_like(deg))
-    D = torch.diag(deg1)
-    A_norm = D @ A @ D 
-    return A_norm
-
-def converter_for_mlp(tris, return_g=False):
-    """
-    Here we calculate the Histogram of vertex degrees, euler's characteristics, tris_per_vertex (F / V) and average deegree number
-
-    Histogram of verted degrees algorithm: 
-        
-        >>> get the degree count for every node in tris
-
-        >>> count how many nodes share each degree value
-    
-    Euler's Charactertic formula (2D):
-
-        >>> V = unique vertices, E = unique edges, F = number of faces, g = surface genus
-
-        >>> x = V - E + F = 2 - 2g
-    
-    Calculating tris_per_vertex:
-
-        >>> Number of faces / unique vertices
-
-    Calculating average degree:
-
-        >>> 2 * unique edges / unique vertices
-
-    Parameters
-    ----------
-
-    tris: list of tuple
-
-        Triangle mesh list
-
-    return_g: boolean
-
-    Returns
-    ------
-
-    if return_g=True => return F, V, E, g, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-
-    else: return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-
-    Examples
-    --------
-
-    >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
-    >>> converter_MLP_2D = PySimplicial.utils.converter_for_mlp(relabel_, return_g=True)
-    >>> print("CONVERTED MLP")
-    >>> print(converter_MLP_2D)
-    CONVERTED MLP
-    (8, 6, 12, 0, 0, 6, 0, 0, 4.0, 1.3333333333333333)
-    """
-
-    F = len(tris) # In example of octahedron: F=8
-    vert = set() # set() guarantees no duplicates
-    for (a,b,c) in tris: # calculate V
-        vert.add(a)
-        vert.add(b)
-        vert.add(c)
-    V = len(vert) # In example of octahedron: V=6 
-    edges = set()
-    for (a,b,c) in tris: # calculate E
-        # if 2 triangles share one edge ; Example. Upper: 1-2 & Lower: 2-1 ; They will be written in edges as (1,2) 
-        edges.add(tuple(sorted((a,b)))) # About python base: tuple() is list ensures that it cannot be modified after creation ; sorted(()) sorts values ​​in ascending order
-        edges.add(tuple(sorted((b,c))))
-        edges.add(tuple(sorted((a,c))))
-    E = len(edges) # In example of octahedron: E=12
-    g = (2 - (V-E+F)) // 2 # Pick our values: 6 - 12 + 8 = 2 ==> 2 - 2 = 0 // 2 ==> g = 0 
-    avg_degree = 2 * E / V
-    tpv = F / V
-    vertice_neighbors = defaultdict(set)
-    for (a,b,c) in tris:
-        vertice_neighbors[a].update([b,c])
-        vertice_neighbors[b].update([a,c])
-        vertice_neighbors[c].update([a,b])
-    deg = [len(vertice_neighbors[v]) for v in vertice_neighbors]
-    bins = [0] * 4
-    for a in deg:
-        if a <= 3:
-            bins[0] += 1
-        elif a <= 5:
-            bins[1] += 1
-        elif a <= 7:
-            bins[2] += 1
+        """
+        n_figure = []
+        map = {}
+        if not simplices:
+            raise ValueError("ValueError: here's not figure")
+        if len(simplices[0]) == 3:
+            for a,b,c in simplices:
+                for v in (a,b,c):
+                    if v not in map:
+                        map[v] = len(map)
+                n_figure.append((map[a], map[b], map[c]))
+        elif len(simplices[0]) == 4:
+            for a,b,c,d in simplices:
+                for v in (a,b,c,d):
+                    if v not in map:
+                        map[v] = len(map)
+                n_figure.append((map[a], map[b], map[c], map[d]))
         else:
-            bins[3] += 1
-    if return_g:
-        return F, V, E, g, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-    else:
-        return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-
-
-def relabel_3D(tetrahedron):
-    """
-    Renumber vertices of a tetrahedrons mesh to consecutive integers starting from 0
-
-    Parameters
-    ----------
-
-    tetrahedron: list
-        Tetrahedrons mesh list
+            raise ValueError("ValueError: the list of tuple with form of more than (a,b,c,d) are unsupported right now")
+        return n_figure
     
-    Returns
-    -------
+    def to_gnn(self, simplices):
+        """
+        Here we calculate the matrix from all vertices of tris-mesh, sum it and return:
 
-    n_tetrahedrons: list of tuple
-        Renumbered tetrahedrons mesh list
-    
-    Examples
-    --------
-
-    >>> tetrahedron_for_relabel = [(100,200,300,400),(0,200,300,400),(0,100,300,400),(0,100,200,400),(0,100,200,300)]
-    >>> relabel_3D_ = PySimplicial.utils.relabel_3D(tetrahedron_for_relabel)
-    >>> print("RELABEL 3D")
-    >>> print(relabel_3D_)
-    RELABEL 3D
-    [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-    """
-    map = {}
-    n_tetrahedron = []
-    for a,b,c,d in tetrahedron:
-        for v in (a,b,c,d):
-            if v not in map:
-                map[v] = len(map)
-        n_tetrahedron.append((map[a], map[b], map[c], map[d]))
-    return n_tetrahedron
-
-
-def converter_for_gnn_3D(tetrahedron):
-    """
-    Here we calculate the matrix from all vertices of tetrahedron-mesh, sum it and return:
-
-    Parameters
-    ----------
-    
-    tetrahedron: list
-        tetrahedron mesh list
-
-    Returns
-    -------
-
-    torch.Tensor:
-        Normalized adjacency matrix of shape
+        Parameters
+        ----------
         
-        A / (s + 1e-8)
+        figure: list of tuple
+            list in form of (a,b,c) or (a,b,c,d) ; anything else are unsupported right now
 
-    torch.Tensor:
-        Node feature matrix of shape
+        Returns
+        -------
 
-        L
+        torch.Tensor:
+            Normalized adjacency matrix of shape
+            
+            A / (s + 1e-8)
 
-    Notes
-    -----
+        torch.Tensor:
+            Node feature matrix of shape
 
-    num_nodes = max(max(t) for t in tetrahedron)
+            L
 
-    A = torch.zeros((num_nodes, num_nodes))
-    
-    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1
+        Notes
+        -----
 
-    s = A.sum()
+        * num_nodes = max(max(t) for t in tris)
 
-    Examples
-    --------
-
-    >>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-    >>> converter_GNN_3D = PySimplicial.utils.converter_for_gnn_3D(relabel_3D_)
-    >>> print("CONVERTER GNN 3D")
-    >>> print(converter_GNN_3D)
-    CONVERTER GNN 3D
-    (tensor([[0.0000, 0.0500, 0.0500, 0.0500, 0.0500],
-            [0.0500, 0.0000, 0.0500, 0.0500, 0.0500],
-            [0.0500, 0.0500, 0.0000, 0.0500, 0.0500],
-            [0.0500, 0.0500, 0.0500, 0.0000, 0.0500],
-            [0.0500, 0.0500, 0.0500, 0.0500, 0.0000]]), tensor([[0.2000, 1.0000],
-            [0.2000, 1.0000],
-            [0.2000, 1.0000],
-            [0.2000, 1.0000],
-            [0.2000, 1.0000]]))
-
-
-    """
-    tetrahedron = relabel_3D(tetrahedron)
-    num_nodes = max(max(t) for t in tetrahedron) + 1
-    A = torch.zeros((num_nodes, num_nodes))
-    for (a,b,c,d) in tetrahedron:
-        A[a,b]=A[b,a]=1.0 ; A[a,c]=A[c,a]=1.0 ; A[a,d]=A[d,a]=1.0;A[b,c]=A[c,b]=1.0 ; A[b,d]=A[d,b]=1.0;A[c,d]=A[d,c]=1.0
-    s = A.sum()
-    degree = (A.sum(dim=1, keepdim=True) / (s + 1e-8))
-    L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1)
-    return A / (s + 1e-8), L
-
-
-def converter_for_tnn_3D(tetrahedron, N):
-    """
-    Here we calculate the symmetric normalized adjacency matrix from tetrahedron-mesh data
-
-    Parameters
-    ----------
-
-    tetrahedron: list of tuple
-        Tetrahedrons mesh list
-    
-    N: int
-        torch.zeros matrix N x N
-
-    Returns
-    -------
-
-    A_norm: torch.Tensor
-        Normalized adjacency matrix of shape 
-
-    Examples
-    --------
-    >>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-    >>> converter_TNN_3D = PySimplicial.utils.converter_for_tnn_3D(relabel_3D_, 6)
-    >>> print("CONVERTER TNN 3D")
-    >>> print(converter_TNN_3D)
-    CONVERTER TNN 3D
-    tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
-            [0.2500, 0.0000, 0.2500, 0.2500, 0.2500, 0.0000],
-            [0.2500, 0.2500, 0.0000, 0.2500, 0.2500, 0.0000],
-            [0.2500, 0.2500, 0.2500, 0.0000, 0.2500, 0.0000],
-            [0.2500, 0.2500, 0.2500, 0.2500, 0.0000, 0.0000],
-            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000]])
-
-    """
-    tetrahedron = relabel_3D(tetrahedron)
-    A = torch.zeros((N,N))
-    for (a,b,c,d) in tetrahedron:
-        A[a,b]=A[b,a]=1.0 ; A[a,c]=A[c,a]=1.0 ; A[a,d]=A[d,a]=1.0;A[b,c]=A[c,b]=1.0 ; A[b,d]=A[d,b]=1.0;A[c,d]=A[d,c]=1.0
-    deg = A.sum(dim=1)
-    deg1 = torch.where(deg > 0, deg.pow(-0.5), torch.zeros_like(deg))
-    D = torch.diag(deg1)
-    A_norm = D @ A @ D 
-    return A_norm
-
-def converter_for_mlp_3D(tetrahedron, return_x=False):
-    """
-    Here we calculate the Histogram of vertex degrees, euler's characteristics, tetrahedron_per_vertex (F / V) and average deegree number
-
-    Histogram of verted degrees algorithm: 
+        * A = torch.zeros((num_nodes, num_nodes))
         
-        >>> get the degree count for every node in tetrahedron
+        * L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1
 
-        >>> count how many nodes share each degree value
-    
-    Euler's Charactertic formula (2D):
+        * s = A.sum()
 
-        >>> V = unique vertices, E = unique edges, F = number of faces, g = surface genus
+        Examples
+        --------
 
-        >>> x = V - E + F = 2 - 2g
-    
-    Calculating tetrahedron_per_vertex:
+        >>> relabel = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+        >>> converter_GNN_2D = PySimplicial.utils.converter_for_gnn(relabel)
+        >>> print("CONVERTER GNN")
+        >>> print(converter_GNN)
+        CONVERTER GNN
+        (tensor([[0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000],
+            [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
+            [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
+            [0.0417, 0.0000, 0.0417, 0.0000, 0.0417, 0.0417],
+            [0.0417, 0.0417, 0.0000, 0.0417, 0.0000, 0.0417],
+            [0.0000, 0.0417, 0.0417, 0.0417, 0.0417, 0.0000]]), tensor([[0.1667, 1.0000],
+            [0.1667, 1.0000],
+            [0.1667, 1.0000],
+            [0.1667, 1.0000],
+            [0.1667, 1.0000],
+            [0.1667, 1.0000]]))
 
-        >>> Number of faces / unique vertices
+        ---
 
-    Calculating average degree:
+        
+        >>> relabel = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+        >>> converter_gnn = PySimplicial.utils.converter_for_gnn(relabel)
+        >>> print("CONVERTER GNN")
+        >>> print(converter_gnn)
+        CONVERTER GNN
+        (tensor([[0.0000, 0.0500, 0.0500, 0.0500, 0.0500],
+                [0.0500, 0.0000, 0.0500, 0.0500, 0.0500],
+                [0.0500, 0.0500, 0.0000, 0.0500, 0.0500],
+                [0.0500, 0.0500, 0.0500, 0.0000, 0.0500],
+                [0.0500, 0.0500, 0.0500, 0.0500, 0.0000]]), tensor([[0.2000, 1.0000],
+                [0.2000, 1.0000],
+                [0.2000, 1.0000],
+                [0.2000, 1.0000],
+                [0.2000, 1.0000]]))
 
-        >>> 2 * unique edges / unique vertices
-
-    Return
-    -------
-
-    if return_x true => return F, V, E, x, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-
-    else: return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-
-    Examples
-    --------
-    >>> relabel_3D_ = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
-    >>> converter_MLP_3D = PySimplicial.utils.converter_for_mlp_3D(relabel_3D_, return_x=True)
-    >>> print("CONVERTED MLP 3D")
-    >>> print(converter_MLP_3D)
-    CONVERTED MLP 3D
-    (10, 5, 10, 0, 0, 5, 0, 0, 4.0, 2.0)
-    """
-    T = len(tetrahedron)
-    # In example of octahedron: F=8
-    vert = set() # set() guarantees no duplicates
-    for (a,b,c,d) in tetrahedron: # calculate V
-        vert.add(a)
-        vert.add(b)
-        vert.add(c)
-        vert.add(d)
-    V = len(vert) # In example of octahedron: V=6 
-    edges = set()
-    for (a,b,c,d) in tetrahedron: # calculate E
-        # if 2 triangles share one edge ; Example. Upper: 1-2 & Lower: 2-1 ; They will be written in edges as (1,2) 
-        edges.add(tuple(sorted((a,b)))), 
-        edges.add(tuple(sorted((a,c)))), 
-        edges.add(tuple(sorted((a,d)))), 
-        edges.add(tuple(sorted((b,c)))),
-        edges.add(tuple(sorted((b,d)))), 
-        edges.add(tuple(sorted((c,d))))
-    E = len(edges) # In example of octahedron: E=12
-    faces=set()
-    for (a,b,c,d) in tetrahedron:
-        faces.add(tuple(sorted((a,b,c))))
-        faces.add(tuple(sorted((a,b,d))))
-        faces.add(tuple(sorted((a,c,d))))
-        faces.add(tuple(sorted((b,c,d))))
-
-    F = len(faces)
-    x = V-E+F-T # Pick our values: 6 - 12 + 8 = 2 ==> 2 - 2 = 0 // 2 ==> g = 0 
-    avg_degree = 2 * E / V
-    tpv = F / V
-    vertice_neighbors = defaultdict(set)
-    for (a,b,c,d) in tetrahedron:
-        vertice_neighbors[a].update([b,c,d])
-        vertice_neighbors[b].update([a,c,d])
-        vertice_neighbors[c].update([a,b,d])
-        vertice_neighbors[d].update([a,b,c])
-    deg = [len(vertice_neighbors[v]) for v in vertice_neighbors]
-    bins = [0] * 4
-    for a in deg:
-        if a <= 3:
-            bins[0] += 1
-        elif a <= 5:
-            bins[1] += 1
-        elif a <= 7:
-            bins[2] += 1
+        """
+        if not simplices:
+            raise ValueError("ValueError: tris must not be empty")
+        if len(simplices[0]) == 3:
+            tris = self.relabel(simplices) # we make it so that the difference between the vertices in the list is not so big (let's say like [1,49])
+            num_nodes = max(max(t) for t in tris) + 1 
+            A = torch.zeros((num_nodes, num_nodes))
+            for (u,v,w) in tris:
+                A[u,v]=A[v,u]=1.0; A[v,w]=A[w,v]=1.0; A[u,w]=A[w,u]=1.0 # fixed A[u,w]=1.0 to A[u,w]=A[w,u]=1.0
+        elif len(simplices[0]) == 4:
+            tetrahedron = self.relabel(simplices)
+            num_nodes = max(max(t) for t in tetrahedron) + 1
+            A = torch.zeros((num_nodes, num_nodes))
+            for (a,b,c,d) in tetrahedron:
+                A[a,b]=A[b,a]=1.0 ; A[a,c]=A[c,a]=1.0 ; A[a,d]=A[d,a]=1.0;A[b,c]=A[c,b]=1.0 ; A[b,d]=A[d,b]=1.0;A[c,d]=A[d,c]=1.0
         else:
-            bins[3] += 1
-    if return_x:
-        return F, V, E, x, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
-    else:
-        return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+            raise ValueError("ValueError: right now the list of tuple as a figure in form of more than (a,b,c,d) are not supported")
+        s = A.sum()
+        degree = (A.sum(dim=1, keepdim=True) / (s + 1e-8))
+        L = torch.cat([degree, torch.ones(num_nodes, 1)], dim=1)
+        if torch.equal(A, A.T) == False:
+            print(f"warning, torch.equal(A, A.T) is false")    
+        return A / (s + 1e-8), L
+    def to_tnn(self, simplices, N):
+        """
+        Here we calculate the symmetric normalized adjacency matrix from tris-mesh data
+
+        Parameters
+        ----------
+
+        figure: list of tuple
+            list in form of (a,b,c) or (a,b,c,d) ; anything else are unsupported right now
+        
+        N: int
+            torch.zeros matrix N x N
+
+        Returns
+        -------
+
+        torch.Tensor:
+            Normalized adjacency matrix of shape 
+
+        Examples
+        --------
+
+        >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+        >>> converter_TNN = PySimplicial.utils.converter_for_tnn(relabel_, 6)
+        >>> print("CONVERTER TNN")
+        >>> print(converter_TNN)
+        CONVERTER TNN
+        tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
+            [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+            [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+            [0.2500, 0.0000, 0.2500, 0.0000, 0.2500, 0.2500],
+            [0.2500, 0.2500, 0.0000, 0.2500, 0.0000, 0.2500],
+            [0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000]])
+        ---
+
+        >>> relabel = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+        >>> converter_TNN = PySimplicial.utils.converter_for_tnn(relabel, 6)
+        >>> print("CONVERTER TNN")
+        >>> print(converter_TNN)
+        CONVERTER TNN
+        tensor([[0.0000, 0.2500, 0.2500, 0.2500, 0.2500, 0.0000],
+                [0.2500, 0.0000, 0.2500, 0.2500, 0.2500, 0.0000],
+                [0.2500, 0.2500, 0.0000, 0.2500, 0.2500, 0.0000],
+                [0.2500, 0.2500, 0.2500, 0.0000, 0.2500, 0.0000],
+                [0.2500, 0.2500, 0.2500, 0.2500, 0.0000, 0.0000],
+                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000]])
+        """
+        if not simplices:
+            raise ValueError("ValueError: figure must not be empty")
+        
+        if len(simplices[0]) == 3:
+            tris = self.relabel(simplices)
+            A = torch.zeros((N,N))
+            for (u,v,w) in tris:
+                A[u,v]=A[v,u]=1.0; A[v,w]=A[w,v]=1.0; A[u,w]=A[w,u]=1.0
+
+        elif len(simplices[0]) == 4:
+            tetrahedron = self.relabel(simplices)
+            A = torch.zeros((N,N))
+            for (a,b,c,d) in tetrahedron:
+                A[a,b]=A[b,a]=1.0 ; A[a,c]=A[c,a]=1.0 ; A[a,d]=A[d,a]=1.0;A[b,c]=A[c,b]=1.0 ; A[b,d]=A[d,b]=1.0;A[c,d]=A[d,c]=1.0
+
+        else:
+            raise ValueError("ValueError: right now the list of tuple as a figure in form of more than (a,b,c,d) are not supported")
+        
+        deg = A.sum(dim=1)
+        deg1 = torch.where(deg > 0, deg.pow(-0.5), torch.zeros_like(deg))
+        D = torch.diag(deg1)
+        A_norm = D @ A @ D 
+        return A_norm
+
+
+    def to_mlp(self, simplices, return_chi=True):
+        """
+        Here we calculate the Histogram of vertex degrees, euler's characteristics, tris_per_vertex (F / V) and average deegree number
+
+        Histogram of verted degrees algorithm: 
+            
+            >>> get the degree count for every node in tris
+
+            >>> count how many nodes share each degree value
+        
+        Euler's Charactertic formula (2D):
+
+            >>> V = unique vertices, E = unique edges, F = number of faces, g = surface genus
+
+            >>> x = V - E + F = 2 - 2g
+        
+        Calculating tris_per_vertex:
+
+            >>> Number of faces / unique vertices
+
+        Calculating average degree:
+
+            >>> 2 * unique edges / unique vertices
+
+        Parameters
+        ----------
+
+        figure: list of tuple
+
+            list in form of (a,b,c) or (a,b,c,d) ; anything else are unsupported right now
+
+        return_chi: boolean
+
+        Returns
+        ------
+
+        if return_chi=True => return F, V, E, chi, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+
+        else: return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+
+        Examples
+        --------
+
+        >>> relabel_ = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (5, 2, 1), (5, 3, 2), (5, 4, 3), (5, 1, 4)]
+        >>> converter_MLP = PySimplicial.utils.converter_for_mlp(relabel_, return_chi=True)
+        >>> print("CONVERTED MLP")
+        >>> print(converter_MLP)
+        CONVERTED MLP
+        (8, 6, 12, 0, 0, 6, 0, 0, 4.0, 1.3333333333333333)
+
+        ---
+
+        >>> relabel = [(0, 1, 2, 3), (4, 1, 2, 3), (4, 0, 2, 3), (4, 0, 1, 3), (4, 0, 1, 2)]
+        >>> converter_MLP = PySimplicial.utils.converter_for_mlp(relabel, return_chi=True)
+        >>> print("CONVERTED MLP")
+        >>> print(converter_MLP)
+        CONVERTED MLP
+        (10, 5, 10, 0, 0, 5, 0, 0, 4.0, 2.0)
+        """
+        if not simplices:
+            raise ValueError("ValueError: figure must not be empty")
+        T = len(simplices)
+        vert = set() # guarantees no duplicates
+        edges = set()
+        faces=set()
+        vertice_neighbors = defaultdict(set)
+        if len(simplices[0]) == 3:
+            F = len(simplices)
+            for (a,b,c) in simplices: # calculate V
+                vert.add(a)
+                vert.add(b)
+                vert.add(c)
+            V = len(vert) 
+            for (a,b,c) in simplices: # calculate E
+                # if 2 triangles share one edge ; Example. Upper: 1-2 & Lower: 2-1 ; They will be written in edges as (1,2) 
+                edges.add(tuple(sorted((a,b)))) # About python base: tuple() is list ensures that it cannot be modified after creation ; sorted(()) sorts values ​​in ascending order
+                edges.add(tuple(sorted((b,c))))
+                edges.add(tuple(sorted((a,c))))
+            E = len(edges)
+            chi = (2 - (V-E+F)) // 2
+            for (a,b,c) in simplices:
+                vertice_neighbors[a].update([b,c])
+                vertice_neighbors[b].update([a,c])
+                vertice_neighbors[c].update([a,b])
+        elif len(simplices[0]) == 4:
+            for (a,b,c,d) in simplices: # calculate V
+                vert.add(a)
+                vert.add(b)
+                vert.add(c)
+                vert.add(d)
+            V = len(vert) 
+            for (a,b,c,d) in simplices: # calculate E
+                # if 2 triangles share one edge ; Example. Upper: 1-2 & Lower: 2-1 ; They will be written in edges as (1,2) 
+                edges.add(tuple(sorted((a,b))))
+                edges.add(tuple(sorted((a,c))))
+                edges.add(tuple(sorted((a,d))))
+                edges.add(tuple(sorted((b,c))))
+                edges.add(tuple(sorted((b,d)))) 
+                edges.add(tuple(sorted((c,d))))
+            E = len(edges) 
+            for (a,b,c,d) in simplices:
+                faces.add(tuple(sorted((a,b,c))))
+                faces.add(tuple(sorted((a,b,d))))
+                faces.add(tuple(sorted((a,c,d))))
+                faces.add(tuple(sorted((b,c,d))))
+            F = len(faces)
+            chi = V-E+F-T
+            for (a,b,c,d) in simplices:
+                vertice_neighbors[a].update([b,c,d])
+                vertice_neighbors[b].update([a,c,d])
+                vertice_neighbors[c].update([a,b,d])
+                vertice_neighbors[d].update([a,b,c])
+        else:
+            raise ValueError("ValueError: right now the list of tuple as a figure in form of more than (a,b,c,d) are not supported")
+        deg = [len(vertice_neighbors[v]) for v in vertice_neighbors]
+        bins = [0] * 4
+        for a in deg:
+            if a <= 3:
+                bins[0] += 1
+            elif a <= 5:
+                bins[1] += 1
+            elif a <= 7:
+                bins[2] += 1
+            else:
+                bins[3] += 1
+        avg_degree = 2 * E / V
+        tpv = F / V
+        if return_chi:
+            return F, V, E, chi, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+        else:
+            return F, V, E, bins[0], bins[1], bins[2], bins[3], avg_degree, tpv
+
+
+
 
 
 def chain_2D(base, label, K, p_13=0.35, p_22=0.55, p_31=0.10, return_stats=True):
@@ -526,7 +404,7 @@ def chain_2D(base, label, K, p_13=0.35, p_22=0.55, p_31=0.10, return_stats=True)
     """
     out = []
     current = base
-    expected_genus = ps.compute_genus_2D(current) # lock genus at start
+    expected_genus = ps.euler_characteristics(current) # lock genus at start
     stats_1_3, stats_2_2, stats_3_1 = 0, 0, 0
     for _ in range(K):
         r = random.random()
@@ -542,7 +420,7 @@ def chain_2D(base, label, K, p_13=0.35, p_22=0.55, p_31=0.10, return_stats=True)
         elif r < p_13 + p_31 + p_22:
             candidate = ps.move_2_2(current)
             stats_2_2 += 1
-        if ps.compute_genus_2D(candidate) == expected_genus:
+        if ps.euler_characteristics(candidate) == expected_genus:
             current = candidate
         out.append((current, label))
     if return_stats:
@@ -601,7 +479,7 @@ def chain_3D(base, label, K, p_14 = 0.25, p_41=0.15, p_32=0.40, p_23=0.20, retur
     """
     out = []
     current = base
-    expected_connected_components = ps.compute_connected_components_3D(current)
+    expected_connected_components = ps.euler_characteristics(current)
     stats_1_4, stats_4_1, stats_2_3, stats_3_2 = 0, 0, 0, 0
     for _ in range(K):
         r = random.random()
@@ -623,7 +501,7 @@ def chain_3D(base, label, K, p_14 = 0.25, p_41=0.15, p_32=0.40, p_23=0.20, retur
             if candidate is None:
                 candidate = ps.move_2_3(current)
                 stats_2_3 += 1
-            if ps.compute_connected_components_3D(candidate) == expected_connected_components:
+            if ps.euler_characteristics(candidate) == expected_connected_components:
                 current = candidate 
             out.append((current, label))
     if return_stats:
