@@ -1,6 +1,8 @@
 # Official pysimplicial documentation
 
-pysimplicial is a lightweight Python package for working with simplicial complexes in Topological Deep Learning problems, created on foundation of [Open-Closed State-sum Neural Network](https://github.com/kaifczxc-lab/OCSSN)
+pysimplicial, small experimental research toolkit for simplicial triangulations and topology-oriented ML experiments, 
+
+It grew out from my research report called [Open-Closed State-sum Neural Network](https://github.com/kaifczxc-lab/OCSSN)
 
 The current version of the library (0.1.3) has the following set of functions:
 
